@@ -1,0 +1,586 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Oh My Mad Blog</title>
+  
+  <subtitle>人生如逆旅，我亦是行人。</subtitle>
+  <link href="http://madblog.cn/atom.xml" rel="self"/>
+  
+  <link href="http://madblog.cn/"/>
+  <updated>2021-04-26T11:07:45.366Z</updated>
+  <id>http://madblog.cn/</id>
+  
+  <author>
+    <name>Mad King</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Python单链表实现list各种方法以及反转单链表</title>
+    <link href="http://madblog.cn/posts/708ccfc52bb2ad07.html"/>
+    <id>http://madblog.cn/posts/708ccfc52bb2ad07.html</id>
+    <published>2021-03-05T16:46:25.000Z</published>
+    <updated>2021-04-26T11:07:45.366Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;&lt;strong&gt;python实现了单链表的各种方法，尽量使用了魔法函数实现&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;is_empty() 链表是否为空&lt;/li&gt;
+&lt;li&gt;len() 链表长度&lt;/li&gt;
+&lt;li&gt;for in</summary>
+        
+      
+    
+    
+    
+    <category term="单链表" scheme="http://madblog.cn/categories/%E5%8D%95%E9%93%BE%E8%A1%A8/"/>
+    
+    <category term="魔法函数" scheme="http://madblog.cn/categories/%E5%8D%95%E9%93%BE%E8%A1%A8/%E9%AD%94%E6%B3%95%E5%87%BD%E6%95%B0/"/>
+    
+    <category term="python" scheme="http://madblog.cn/categories/%E5%8D%95%E9%93%BE%E8%A1%A8/%E9%AD%94%E6%B3%95%E5%87%BD%E6%95%B0/python/"/>
+    
+    
+    <category term="python" scheme="http://madblog.cn/tags/python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>python列表扁平化</title>
+    <link href="http://madblog.cn/posts/706c2bdd23906681.html"/>
+    <id>http://madblog.cn/posts/706c2bdd23906681.html</id>
+    <published>2021-03-05T15:21:45.000Z</published>
+    <updated>2021-04-26T11:07:45.362Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span</summary>
+        
+      
+    
+    
+    
+    <category term="扁平化" scheme="http://madblog.cn/categories/%E6%89%81%E5%B9%B3%E5%8C%96/"/>
+    
+    <category term="列表" scheme="http://madblog.cn/categories/%E6%89%81%E5%B9%B3%E5%8C%96/%E5%88%97%E8%A1%A8/"/>
+    
+    <category term="数组" scheme="http://madblog.cn/categories/%E6%89%81%E5%B9%B3%E5%8C%96/%E5%88%97%E8%A1%A8/%E6%95%B0%E7%BB%84/"/>
+    
+    <category term="python" scheme="http://madblog.cn/categories/%E6%89%81%E5%B9%B3%E5%8C%96/%E5%88%97%E8%A1%A8/%E6%95%B0%E7%BB%84/python/"/>
+    
+    
+    <category term="python" scheme="http://madblog.cn/tags/python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Atlassian全软件+插件破解与部署(confluece、jira、fisheye等)</title>
+    <link href="http://madblog.cn/posts/0d0806df1fec8d39.html"/>
+    <id>http://madblog.cn/posts/0d0806df1fec8d39.html</id>
+    <published>2021-02-22T16:49:06.000Z</published>
+    <updated>2021-04-26T11:07:45.352Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;支持的服务列表&quot;&gt;&lt;a href=&quot;#支持的服务列表&quot; class=&quot;headerlink&quot; title=&quot;支持的服务列表&quot;&gt;&lt;/a&gt;支持的服务列表&lt;/h2&gt;&lt;h4 id=&quot;Support-almost-any-version&quot;&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="Atlassian" scheme="http://madblog.cn/categories/Atlassian/"/>
+    
+    <category term="confluence" scheme="http://madblog.cn/categories/Atlassian/confluence/"/>
+    
+    <category term="jira" scheme="http://madblog.cn/categories/Atlassian/confluence/jira/"/>
+    
+    
+    <category term="Atlassian" scheme="http://madblog.cn/tags/Atlassian/"/>
+    
+    <category term="confluence" scheme="http://madblog.cn/tags/confluence/"/>
+    
+    <category term="jira" scheme="http://madblog.cn/tags/jira/"/>
+    
+    <category term="crack" scheme="http://madblog.cn/tags/crack/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>kong入门笔记</title>
+    <link href="http://madblog.cn/posts/e52afa13e0c050b7.html"/>
+    <id>http://madblog.cn/posts/e52afa13e0c050b7.html</id>
+    <published>2020-12-05T15:24:19.000Z</published>
+    <updated>2021-04-26T11:07:45.358Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;kong部署&quot;&gt;&lt;a href=&quot;#kong部署&quot; class=&quot;headerlink&quot; title=&quot;kong部署&quot;&gt;&lt;/a&gt;kong部署&lt;/h2&gt;&lt;h4 id=&quot;APT资料库&quot;&gt;&lt;a href=&quot;#APT资料库&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="kong" scheme="http://madblog.cn/categories/kong/"/>
+    
+    
+    <category term="kong" scheme="http://madblog.cn/tags/kong/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Kafka权威指南笔记（二）</title>
+    <link href="http://madblog.cn/posts/eb5475e4070bf46d.html"/>
+    <id>http://madblog.cn/posts/eb5475e4070bf46d.html</id>
+    <published>2020-10-04T16:00:35.000Z</published>
+    <updated>2021-04-26T11:07:45.357Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h4 id=&quot;一、生产者&quot;&gt;&lt;a href=&quot;#一、生产者&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="Kafka" scheme="http://madblog.cn/categories/Kafka/"/>
+    
+    
+    <category term="Kafka" scheme="http://madblog.cn/tags/Kafka/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Kafka权威指南笔记（一）</title>
+    <link href="http://madblog.cn/posts/3a249be0be50662b.html"/>
+    <id>http://madblog.cn/posts/3a249be0be50662b.html</id>
+    <published>2020-10-01T06:59:11.000Z</published>
+    <updated>2021-04-26T11:07:45.357Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h4 id=&quot;一、各组件概念&quot;&gt;&lt;a href=&quot;#一、各组件概念&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="Kafka" scheme="http://madblog.cn/categories/Kafka/"/>
+    
+    
+    <category term="Kafka" scheme="http://madblog.cn/tags/Kafka/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>mongoconnector + ES：实现mongodb数据全量+增量同步到ES</title>
+    <link href="http://madblog.cn/posts/18a3dcfe8a5ec672.html"/>
+    <id>http://madblog.cn/posts/18a3dcfe8a5ec672.html</id>
+    <published>2020-04-23T07:43:23.000Z</published>
+    <updated>2021-04-26T11:07:45.359Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h3 id=&quot;一、mongodb-ES的原因与方案&quot;&gt;&lt;a href=&quot;#一、mongodb-ES的原因与方案&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="mongoconnector" scheme="http://madblog.cn/categories/mongoconnector/"/>
+    
+    <category term="ES" scheme="http://madblog.cn/categories/mongoconnector/ES/"/>
+    
+    <category term="mongodb" scheme="http://madblog.cn/categories/mongoconnector/ES/mongodb/"/>
+    
+    
+    <category term="mongoconnector" scheme="http://madblog.cn/tags/mongoconnector/"/>
+    
+    <category term="ES" scheme="http://madblog.cn/tags/ES/"/>
+    
+    <category term="mongodb" scheme="http://madblog.cn/tags/mongodb/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux文件描述符与限制</title>
+    <link href="http://madblog.cn/posts/953af7450dea2051.html"/>
+    <id>http://madblog.cn/posts/953af7450dea2051.html</id>
+    <published>2020-04-22T09:27:23.000Z</published>
+    <updated>2021-04-26T11:07:45.358Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;Linux文件描述符与限制&quot;&gt;&lt;a href=&quot;#Linux文件描述符与限制&quot; class=&quot;headerlink&quot; title=&quot;Linux文件描述符与限制&quot;&gt;&lt;/a&gt;Linux文件描述符与限制&lt;/h1&gt;&lt;h3</summary>
+        
+      
+    
+    
+    
+    <category term="shell" scheme="http://madblog.cn/categories/shell/"/>
+    
+    
+    <category term="ulimit" scheme="http://madblog.cn/tags/ulimit/"/>
+    
+    <category term="linux" scheme="http://madblog.cn/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ES集群部署与配置（破解白金版）</title>
+    <link href="http://madblog.cn/posts/4daeb560d10fb7de.html"/>
+    <id>http://madblog.cn/posts/4daeb560d10fb7de.html</id>
+    <published>2020-04-02T16:43:23.000Z</published>
+    <updated>2021-04-26T11:07:45.353Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;ES集群部署与配置&quot;&gt;&lt;a href=&quot;#ES集群部署与配置&quot; class=&quot;headerlink&quot; title=&quot;ES集群部署与配置&quot;&gt;&lt;/a&gt;ES集群部署与配置&lt;/h1&gt;&lt;h4 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="ELK" scheme="http://madblog.cn/categories/ELK/"/>
+    
+    
+    <category term="crack" scheme="http://madblog.cn/tags/crack/"/>
+    
+    <category term="ELK" scheme="http://madblog.cn/tags/ELK/"/>
+    
+    <category term="elasticsearch" scheme="http://madblog.cn/tags/elasticsearch/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Google SRE 读书笔记 -- 分布式系统的监控</title>
+    <link href="http://madblog.cn/posts/e77168f6653bb6b9.html"/>
+    <id>http://madblog.cn/posts/e77168f6653bb6b9.html</id>
+    <published>2019-11-17T05:56:23.000Z</published>
+    <updated>2021-04-26T11:07:45.354Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h5 id=&quot;监控&quot;&gt;&lt;a href=&quot;#监控&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="Google SRE" scheme="http://madblog.cn/categories/Google-SRE/"/>
+    
+    
+    <category term="Google SRE" scheme="http://madblog.cn/tags/Google-SRE/"/>
+    
+    <category term="分布式系统监控" scheme="http://madblog.cn/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%9B%91%E6%8E%A7/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>openvpn部署与配置</title>
+    <link href="http://madblog.cn/posts/8568f93a02d542c8.html"/>
+    <id>http://madblog.cn/posts/8568f93a02d542c8.html</id>
+    <published>2019-10-24T12:50:23.000Z</published>
+    <updated>2021-04-26T11:07:45.361Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;OpenVPN 是一个基于 OpenSSL 库的应用层 VPN 实现。和传统 VPN 相比，它的优点是简单易用。</summary>
+        
+      
+    
+    
+    
+    <category term="shell" scheme="http://madblog.cn/categories/shell/"/>
+    
+    
+    <category term="sed" scheme="http://madblog.cn/tags/sed/"/>
+    
+    <category term="shell" scheme="http://madblog.cn/tags/shell/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Mongodb副本集的分库与恢复操作</title>
+    <link href="http://madblog.cn/posts/e6d7c5c3586abd73.html"/>
+    <id>http://madblog.cn/posts/e6d7c5c3586abd73.html</id>
+    <published>2019-07-21T16:00:31.000Z</published>
+    <updated>2021-04-26T11:07:45.360Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;Mongodb的维护工作中经常有分库的操作，需要将一个副本集集群拆分为两个，操作步骤一般是先扩展两个副本节点，然后再把这两个几点从旧集群中拆分出去，组成新的集群，然后删减多余的数据。&quot;&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="Hexo" scheme="http://madblog.cn/categories/Hexo/"/>
+    
+    
+    <category term="Github" scheme="http://madblog.cn/tags/Github/"/>
+    
+    <category term="Hexo" scheme="http://madblog.cn/tags/Hexo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Redis 通过rdb文件分析内存</title>
+    <link href="http://madblog.cn/posts/ed64ad4a32f60d5f.html"/>
+    <id>http://madblog.cn/posts/ed64ad4a32f60d5f.html</id>
+    <published>2019-06-17T15:51:58.000Z</published>
+    <updated>2021-04-26T11:07:45.367Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h3 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;Redis</summary>
+        
+      
+    
+    
+    
+    <category term="Hexo" scheme="http://madblog.cn/categories/Hexo/"/>
+    
+    
+    <category term="Github" scheme="http://madblog.cn/tags/Github/"/>
+    
+    <category term="Hexo" scheme="http://madblog.cn/tags/Hexo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Influxdb 收集 Nginx(Tengine)状态信息并在Grafana上展示（一）Tengine的配置</title>
+    <link href="http://madblog.cn/posts/8214efb11e945d28.html"/>
+    <id>http://madblog.cn/posts/8214efb11e945d28.html</id>
+    <published>2019-03-06T03:11:40.000Z</published>
+    <updated>2021-04-26T11:07:45.356Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h6</summary>
+        
+      
+    
+    
+    
+    <category term="Hexo" scheme="http://madblog.cn/categories/Hexo/"/>
+    
+    
+    <category term="Tengine" scheme="http://madblog.cn/tags/Tengine/"/>
+    
+    <category term="Nginx" scheme="http://madblog.cn/tags/Nginx/"/>
+    
+    <category term="Influxdb" scheme="http://madblog.cn/tags/Influxdb/"/>
+    
+    <category term="Grafana" scheme="http://madblog.cn/tags/Grafana/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>zaibbix Preprocessing 预处理json</title>
+    <link href="http://madblog.cn/posts/447db89dfafcd0d8.html"/>
+    <id>http://madblog.cn/posts/447db89dfafcd0d8.html</id>
+    <published>2019-03-05T06:32:00.000Z</published>
+    <updated>2021-04-26T11:07:45.367Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h6 id=&quot;Zabbix-3-4版本更新了许多新功能，其中一个监控项功能Preprocessing，根据官方说明文档，在监控项收集的数据存储到数据库前，预先对数据进行处理。&quot;&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="Hexo" scheme="http://madblog.cn/categories/Hexo/"/>
+    
+    
+    <category term="Zabbix" scheme="http://madblog.cn/tags/Zabbix/"/>
+    
+    <category term="Preprocessing" scheme="http://madblog.cn/tags/Preprocessing/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>shell脚本与编程笔记</title>
+    <link href="http://madblog.cn/posts/63396f8432c139a8.html"/>
+    <id>http://madblog.cn/posts/63396f8432c139a8.html</id>
+    <published>2018-12-12T06:17:19.000Z</published>
+    <updated>2021-04-26T11:07:45.367Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h3 id=&quot;1-expr-命令&quot;&gt;&lt;a href=&quot;#1-expr-命令&quot; class=&quot;headerlink&quot; title=&quot;1. expr 命令&quot;&gt;&lt;/a&gt;1. expr</summary>
+        
+      
+    
+    
+    
+    <category term="Hexo" scheme="http://madblog.cn/categories/Hexo/"/>
+    
+    
+    <category term="Github" scheme="http://madblog.cn/tags/Github/"/>
+    
+    <category term="Hexo" scheme="http://madblog.cn/tags/Hexo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MongoDB 修改副本集名称</title>
+    <link href="http://madblog.cn/posts/d5cc6ffb1555a830.html"/>
+    <id>http://madblog.cn/posts/d5cc6ffb1555a830.html</id>
+    <published>2018-09-17T07:57:12.000Z</published>
+    <updated>2021-04-26T11:07:45.359Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h5</summary>
+        
+      
+    
+    
+    
+    <category term="MongoDB" scheme="http://madblog.cn/categories/MongoDB/"/>
+    
+    
+    <category term="MongoDB" scheme="http://madblog.cn/tags/MongoDB/"/>
+    
+    <category term="replicate" scheme="http://madblog.cn/tags/replicate/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MongoDB从2.xx.xx升级到3.xx.xx版本</title>
+    <link href="http://madblog.cn/posts/2a3a458f30e97485.html"/>
+    <id>http://madblog.cn/posts/2a3a458f30e97485.html</id>
+    <published>2018-09-17T06:46:55.000Z</published>
+    <updated>2021-04-26T11:07:45.360Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h3 id=&quot;一、为什么要升级到3-X&quot;&gt;&lt;a href=&quot;#一、为什么要升级到3-X&quot; class=&quot;headerlink&quot; title=&quot;一、为什么要升级到3.X&quot;&gt;&lt;/a&gt;一、为什么要升级到3.X&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;MongoDB</summary>
+        
+      
+    
+    
+    
+    <category term="MongoDB" scheme="http://madblog.cn/categories/MongoDB/"/>
+    
+    
+    <category term="MongoDB" scheme="http://madblog.cn/tags/MongoDB/"/>
+    
+    <category term="DB" scheme="http://madblog.cn/tags/DB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>sed常用用法总结</title>
+    <link href="http://madblog.cn/posts/ae371d4e5e4ba81c.html"/>
+    <id>http://madblog.cn/posts/ae371d4e5e4ba81c.html</id>
+    <published>2018-09-09T17:37:23.000Z</published>
+    <updated>2021-04-26T11:07:45.352Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;a\  在指定行下面插入文本&lt;/p&gt;
+ &lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span</summary>
+        
+      
+    
+    
+    
+    <category term="shell" scheme="http://madblog.cn/categories/shell/"/>
+    
+    
+    <category term="sed" scheme="http://madblog.cn/tags/sed/"/>
+    
+    <category term="shell" scheme="http://madblog.cn/tags/shell/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>nginx报错:『upstream response is buffered to a temporary file 』</title>
+    <link href="http://madblog.cn/posts/3a67d943aecf0d77.html"/>
+    <id>http://madblog.cn/posts/3a67d943aecf0d77.html</id>
+    <published>2018-09-09T14:24:29.000Z</published>
+    <updated>2021-04-26T11:07:45.361Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h3 id=&quot;需求与问题&quot;&gt;&lt;a href=&quot;#需求与问题&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="Nginx" scheme="http://madblog.cn/categories/Nginx/"/>
+    
+    
+    <category term="Nginx" scheme="http://madblog.cn/tags/Nginx/"/>
+    
+  </entry>
+  
+</feed>

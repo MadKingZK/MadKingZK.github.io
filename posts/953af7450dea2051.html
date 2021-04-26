@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <link rel="stylesheet" type="text/css" href="http://madblog.cn/assets/waifu.css"/>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.jpg?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="ulimit,linux," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Linux文件描述符与限制文件描述符是什么？和文件句柄有啥区别？文件描述符是linux&#x2F;unix操作系统中特有的概念。相当于windows系统中的文件句柄。一个意思不同叫法。 Linux系统中， 每当进程打开一个文件时，系统就为其分配一个唯一的整型文件描述符，用来标识这个文件。标准C中每个进程默认打开的有三个文件，标准输入，标准输出，标准错误，分别用一个FILE结构的指针来表示，即stdin，st">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux文件描述符与限制">
+<meta property="og:url" content="http://madblog.cn/posts/953af7450dea2051.html">
+<meta property="og:site_name" content="Oh My Mad Blog">
+<meta property="og:description" content="Linux文件描述符与限制文件描述符是什么？和文件句柄有啥区别？文件描述符是linux&#x2F;unix操作系统中特有的概念。相当于windows系统中的文件句柄。一个意思不同叫法。 Linux系统中， 每当进程打开一个文件时，系统就为其分配一个唯一的整型文件描述符，用来标识这个文件。标准C中每个进程默认打开的有三个文件，标准输入，标准输出，标准错误，分别用一个FILE结构的指针来表示，即stdin，st">
+<meta property="og:locale">
+<meta property="article:published_time" content="2020-04-22T09:27:23.000Z">
+<meta property="article:modified_time" content="2021-04-26T11:07:45.358Z">
+<meta property="article:author" content="Mad King">
+<meta property="article:tag" content="ulimit">
+<meta property="article:tag" content="linux">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://madblog.cn/posts/953af7450dea2051.html"/>
+
+
+
+
+
+  <title>Linux文件描述符与限制 | Oh My Mad Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="Oh My Mad Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <a target="_blank" rel="noopener" href="https://github.com/harvey-zang"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Oh My Mad Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">人生如逆旅，我亦是行人。</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://madblog.cn/posts/953af7450dea2051.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1539151696&di=7e7522a3912191d49079c7bfc7173f79&src=http%3A%2F%2Fn1.itc.cn%2Fimg8%2Fwb%2Fsmccloud%2Frecom%2F2015%2F04%2F24%2F142980990481836394.JPEG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Oh My Mad Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Linux文件描述符与限制</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-22T17:27:23+08:00">
+                2020-04-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/shell/" itemprop="url" rel="index">
+                    <span itemprop="name">shell</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/953af7450dea2051.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/posts/953af7450dea2051.html" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+            <span>热度: </span><span id="busuanzi_value_page_pv"></span><span>℃</span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.7k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  6
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Linux文件描述符与限制"><a href="#Linux文件描述符与限制" class="headerlink" title="Linux文件描述符与限制"></a>Linux文件描述符与限制</h1><h3 id="文件描述符是什么？和文件句柄有啥区别？"><a href="#文件描述符是什么？和文件句柄有啥区别？" class="headerlink" title="文件描述符是什么？和文件句柄有啥区别？"></a>文件描述符是什么？和文件句柄有啥区别？</h3><p>文件描述符是linux/unix操作系统中特有的概念。相当于windows系统中的文件句柄。一个意思不同叫法。</p>
+<p>Linux系统中， 每当进程打开一个文件时，系统就为其分配一个唯一的整型文件描述符，用来标识这个文件。标准C中每个进程默认打开的有三个文件，标准输入，标准输出，标准错误，分别用一个FILE结构的指针来表示，即stdin，stout，sterr，这三个结构分别对应着三个文件描述符0,1,2。</p>
+<p>文件描述符是一个简单的整数，用以标明每一个被进程所打开的文件和socket。第一个打开的文件是0，第二个是1，依此类推。linux 操作系统通常对每个进程l能打开的文件数量有一个限制。</p>
+<h3 id="linux系统对文件描述符的限制"><a href="#linux系统对文件描述符的限制" class="headerlink" title="linux系统对文件描述符的限制"></a>linux系统对文件描述符的限制</h3><h5 id="linux系统对文件描述符的限制有两个级别"><a href="#linux系统对文件描述符的限制有两个级别" class="headerlink" title="linux系统对文件描述符的限制有两个级别"></a>linux系统对文件描述符的限制有两个级别</h5><ul>
+<li>系统级别<br>使用cat /proc/sys/fs/file-max查看，默认值是根据内存大小，系统自动设置的，一般为内存大小（KB）的10%，shell下可以这样计算grep -r MemTotal /proc/meminfo | awk ‘{printf(“%d”,$2/10)}’（可能有各种其他原因导致file-max没有设置为内存的10%）<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~# cat /proc/sys/fs/file-max</span><br><span class="line">188273</span><br><span class="line"></span><br><span class="line">root@ubuntu:~# grep -r MemTotal /proc/meminfo | awk &#x27;&#123;printf(&quot;%d&quot;,$2/10)&#125;&#x27;</span><br><span class="line">183976</span><br></pre></td></tr></table></figure>
+用户级别：默认是1024，使用ulimit -n查看<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~# ulimit -n</span><br><span class="line">1024</span><br></pre></td></tr></table></figure>
+<h5 id="为什么要限制打开的文件描述符"><a href="#为什么要限制打开的文件描述符" class="headerlink" title="为什么要限制打开的文件描述符"></a>为什么要限制打开的文件描述符</h5></li>
+<li>资源问题：每个打开的文件都需要消耗内存来管理，而内存是有限的。</li>
+<li>安全问题：如果不限制的话，有不怀好心的人启动一个进程来无限的创建和打开新的文件，会让服务器崩溃。</li>
+</ul>
+<p>所以限制文件描述符的数量对于linux系统的稳定性是非常重要的。</p>
+<h3 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h3><h5 id="限制资源使用的配置文件"><a href="#限制资源使用的配置文件" class="headerlink" title="限制资源使用的配置文件"></a>限制资源使用的配置文件</h5><ul>
+<li>/etc/security/limits.conf</li>
+<li>/etc/security/limits.d/目录</li>
+</ul>
+<p><strong>/etc/security/limits.d/里面配置会覆盖/etc/security/limits.conf的配置</strong></p>
+<h5 id="可以限制的资源类型如下"><a href="#可以限制的资源类型如下" class="headerlink" title="可以限制的资源类型如下"></a>可以限制的资源类型如下</h5><ul>
+<li>所创建的内核文件的大小</li>
+<li>进程数据块的大小</li>
+<li>Shell 进程创建文件的大小</li>
+<li>内存锁住的大小</li>
+<li>常驻内存集的大小</li>
+<li>打开文件描述符的数量</li>
+<li>分配堆栈的最大大小</li>
+<li>CPU 时间</li>
+<li>单个用户的最大线程数</li>
+<li>Shell 进程所能使用的最大虚拟内存</li>
+</ul>
+<p><strong>配置同时支持硬资源和软资源的限制</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~# cat /etc/security/limits.conf</span><br><span class="line"><span class="meta">#</span><span class="bash">&lt;domain&gt;      &lt;<span class="built_in">type</span>&gt;  &lt;item&gt;         &lt;value&gt;</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"></span><br><span class="line"><span class="bash"><span class="comment">#*               soft    core            0</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash">root            hard    core            100000</span></span><br><span class="line"><span class="meta">#</span><span class="bash">*               hard    rss             10000</span></span><br><span class="line"><span class="meta">#</span><span class="bash">@student        hard    nproc           20</span></span><br><span class="line"><span class="meta">#</span><span class="bash">@faculty        soft    nproc           20</span></span><br><span class="line"><span class="meta">#</span><span class="bash">@faculty        hard    nproc           50</span></span><br><span class="line"><span class="meta">#</span><span class="bash">ftp             hard    nproc           0</span></span><br><span class="line"><span class="meta">#</span><span class="bash">ftp             -       chroot          /ftp</span></span><br><span class="line"><span class="meta">#</span><span class="bash">@student        -       maxlogins       4</span></span><br><span class="line"></span><br><span class="line">*                soft    nofile          51200</span><br><span class="line">*                hard    nofile          51200</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> End of file</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>第一列表示用户和组（@开头）</li>
+<li>第二列表示软限制还是硬限制</li>
+<li>第三列表示限制的资源类型</li>
+<li>第四列表示限制的最大值</li>
+</ul>
+<p><strong>hard和soft的区别</strong>: soft是一个警告值，而hard则是一个真正意义的阀值，超过就会报错，一般情况下都是设为同一个值。</p>
+<p><strong>core是内核文件，nofile是文件描述符，noproc是进程，一般情况下只限制文件描述符数和进程数就够了</strong></p>
+<h3 id="系统级别"><a href="#系统级别" class="headerlink" title="系统级别"></a>系统级别</h3><ol>
+<li>查看</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~# cat /proc/sys/fs/file-max</span><br><span class="line">183976</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>设置</li>
+</ol>
+<ul>
+<li>临时性</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~# echo 1000000 &gt; /proc/sys/fs/file-max</span><br></pre></td></tr></table></figure>
+<ul>
+<li>永久性<br>在/etc/sysctl.conf中设置，应该设什么值是最佳实践？比如8G的内存，设为8192/2 * 256 = 524288<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fs.file-max = 1000000</span><br></pre></td></tr></table></figure>
+<h3 id="用户级别"><a href="#用户级别" class="headerlink" title="用户级别"></a>用户级别</h3></li>
+</ul>
+<ol>
+<li>查看，-n默认查看的是soft limit，这个值是从/etc/security/limits.conf文件的* soft nofile 655350来的</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~# ulimit -n</span><br><span class="line">170000</span><br></pre></td></tr></table></figure>
+<p>查看hard limit</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~# ulimit -Hn</span><br><span class="line">170000</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>设置</li>
+</ol>
+<ul>
+<li>临时性<br>通过ulimit -Sn设置最soft limit，注意soft limit必须小于hard limit<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ulimit -Sn 160000</span><br></pre></td></tr></table></figure>
+通过ulimit -Hn设置最Hard limit<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ulimit -Hn 160000</span><br></pre></td></tr></table></figure>
+同时设置soft limit和hard limit。对于非root用户只能设置比原来小的hard limit<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ulimit -n 180000</span><br></pre></td></tr></table></figure></li>
+<li>永久性<br>root权限下，在/etc/security/limits.conf中添加如下两行，*表示所有用户，重启生效<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">* soft nofile 102400</span><br><span class="line">* hard nofile 104800</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：设置nofile的hard limit还有一点要注意的就是hard limit不能大于/proc/sys/fs/nr_open，假如hard limit大于nr_open，注销后将无法正常登录。</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="当前打开的文件描述符"><a href="#当前打开的文件描述符" class="headerlink" title="当前打开的文件描述符"></a>当前打开的文件描述符</h3><h5 id="查看系统当前打开的文件描述符数量"><a href="#查看系统当前打开的文件描述符数量" class="headerlink" title="查看系统当前打开的文件描述符数量"></a>查看系统当前打开的文件描述符数量</h5><p>其中第一个数表示当前系统分配后已使用的文件描述符数，第二个数表示分配后未使用的（内核2.6版本中这个值总是为0，这并不是一个错误，它意味着已经分配的文件描述符总会被使用），第三个数等于最大值file-max。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~# cat /proc/sys/fs/file-nr </span><br><span class="line">2176    0    2048000</span><br></pre></td></tr></table></figure>
+<h5 id="查看某个进程打开的文件描述符数量"><a href="#查看某个进程打开的文件描述符数量" class="headerlink" title="查看某个进程打开的文件描述符数量"></a>查看某个进程打开的文件描述符数量</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~# ls /proc/35961/fd | wc -l</span><br><span class="line">20</span><br></pre></td></tr></table></figure>
+<h5 id="看下哪些进程占用的文件描述符比较多，排下序"><a href="#看下哪些进程占用的文件描述符比较多，排下序" class="headerlink" title="看下哪些进程占用的文件描述符比较多，排下序"></a>看下哪些进程占用的文件描述符比较多，排下序</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~# sudo find /proc -print | grep -P &#x27;/proc/\d+/fd/&#x27;| awk -F &#x27;/&#x27; &#x27;&#123;print $3&#125;&#x27; | uniq -c | sort -rn</span><br><span class="line">    Count  PID</span><br><span class="line">    129   1994</span><br><span class="line">    124   1993</span><br><span class="line">    122   1995</span><br><span class="line">    119   1992</span><br><span class="line">    118   23747</span><br><span class="line">     69   5504</span><br></pre></td></tr></table></figure>
+<h3 id="错误的查看方法"><a href="#错误的查看方法" class="headerlink" title="错误的查看方法"></a>错误的查看方法</h3><h5 id="使用lsof查看打开文件数是错误的"><a href="#使用lsof查看打开文件数是错误的" class="headerlink" title="使用lsof查看打开文件数是错误的"></a>使用lsof查看打开文件数是错误的</h5><ul>
+<li><p>sof的结果包含了并非以fd形式打开的文件，比如用mmap方式访问文件（FD一栏显示为mem），实际并不占用fd。<br>其中包括了像.so这样的文件。从结果看.jar文件也是以FD为mem和具体fd编号分别打开了一次。</p>
+</li>
+<li><p>CentOS 7的lsof（我这里lsof -v的版本号是4.87）是按PID/TID/file的组合对应一行，不是一行一个fd。同一个进程如果多个线程访问同一个文件通常只需要打开一次、占用一个fd，但在lsof中就显示多行。<br>如果用lsof -p <pid>，则不按TID显示，结果数少很多。但仍包含了没有使用fd的文件。</p>
+</li>
+</ul>
+<h3 id="正确的查看方法"><a href="#正确的查看方法" class="headerlink" title="正确的查看方法"></a>正确的查看方法</h3><h5 id="查看-proc-中文件"><a href="#查看-proc-中文件" class="headerlink" title="查看/proc/中文件"></a>查看/proc/中文件</h5><ul>
+<li>准确的查看fd使用总数的命令<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /proc/sys/fs/file-nr</span><br></pre></td></tr></table></figure>
+或者（结果多的时候运行需要一段时间）<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo find /proc -print | grep -P &#x27;/proc/\d+/fd/&#x27;| wc -l</span><br></pre></td></tr></table></figure></li>
+<li>查看具体一个进程号的fd数量<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -l /proc/&lt;pid&gt;/fd | wc -l</span><br></pre></td></tr></table></figure></li>
+<li>查看哪个进程使用的fd最多，并排序<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo find /proc -print | grep -P &#x27;/proc/\d+/fd/&#x27;| awk -F &#x27;/&#x27; &#x27;&#123;print $3&#125;&#x27; | uniq -c | sort -rn </span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>但还要注意上面的命令返回的是系统的fd使用情况，而ulimit的配置是针对单用户的，两者是有区别的</strong></p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+      <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+      
+    </div>
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Mad King
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://madblog.cn/posts/953af7450dea2051.html" title="Linux文件描述符与限制">http://madblog.cn/posts/953af7450dea2051.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ulimit/" rel="tag"> <i class="fa fa-tag"></i> ulimit</a>
+          
+            <a href="/tags/linux/" rel="tag"> <i class="fa fa-tag"></i> linux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/4daeb560d10fb7de.html" rel="next" title="ES集群部署与配置（破解白金版）">
+                <i class="fa fa-chevron-left"></i> ES集群部署与配置（破解白金版）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/18a3dcfe8a5ec672.html" rel="prev" title="mongoconnector + ES：实现mongodb数据全量+增量同步到ES">
+                mongoconnector + ES：实现mongodb数据全量+增量同步到ES <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1539151696&di=7e7522a3912191d49079c7bfc7173f79&src=http%3A%2F%2Fn1.itc.cn%2Fimg8%2Fwb%2Fsmccloud%2Frecom%2F2015%2F04%2F24%2F142980990481836394.JPEG"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7Carchive">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+          </div>
+          
+         <div style="width:100%; border-top:1px solid #cdcdcd; border-bottom:1px solid #cdcdcd; margin-bottom:16px; padding-top:10px; text-align:center;">每日du英语<div id="edslogan"></div></div>
+
+         <!--
+<div class="cus_weather" id="cus_weather">
+  <div class="cus_weather_tmp" id="cus_weather_tmp">-</div>
+  <div class="cus_weather_cell">
+    <div class="cus_weather_location" id="cus_weather_location">-</div>
+    <div class="cus_weather_cond_txt" id="cus_weather_cond_txt">-</div>
+    <div class="cus_weather_wind">
+      <span class="cus_weather_wind_dir" id="cus_weather_wind_dir">-</span>
+      <span class="cus_weather_wind_sc" id="cus_weather_wind_sc">0</span>级
+    </div>
+
+    <div class="cus_weather_air" id="cus_weather_air">
+      <span class="cus_weather_qlty" id="cus_weather_qlty">-</span>
+      <span class="cus_weather_aqi" id="cus_weather_aqi">0</span>
+    </div>
+  </div>
+</div>
+-->
+<div id="he-plugin-standard"></div>
+<script>
+WIDGET = {
+  CONFIG: {
+    "layout": 2,
+    "width": "220",
+    "height": "300",
+    "background": 5,
+    "dataColor": "4A4A4A",
+    "borderRadius": 5,
+    "key": "0a5f287552dc4c43b3326c451ed75625"
+  }
+}
+</script>
+<script src="https://widget.qweather.net/standard/static/js/he-standard-common.js?v=2.0"></script>
+
+
+          
+
+          
+            <div class="links-of-author motion-element" style="margin:10px">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/harvey-zang" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:harvey_dent@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://weibo.com/Hodorrrrrrrr" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>微博</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://douban.com/people/your-user-name" target="_blank" title="豆瓣">
+                      
+                        <i class="fa fa-fw fa-douban"></i>豆瓣</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://www.zhihu.com/people/harvey-36-62" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-zhihu"></i>知乎</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6%E4%B8%8E%E9%99%90%E5%88%B6"><span class="nav-number">1.</span> <span class="nav-text">Linux文件描述符与限制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F%E5%92%8C%E6%96%87%E4%BB%B6%E5%8F%A5%E6%9F%84%E6%9C%89%E5%95%A5%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-number">1.0.1.</span> <span class="nav-text">文件描述符是什么？和文件句柄有啥区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linux%E7%B3%BB%E7%BB%9F%E5%AF%B9%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6%E7%9A%84%E9%99%90%E5%88%B6"><span class="nav-number">1.0.2.</span> <span class="nav-text">linux系统对文件描述符的限制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#linux%E7%B3%BB%E7%BB%9F%E5%AF%B9%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6%E7%9A%84%E9%99%90%E5%88%B6%E6%9C%89%E4%B8%A4%E4%B8%AA%E7%BA%A7%E5%88%AB"><span class="nav-number">1.0.2.0.1.</span> <span class="nav-text">linux系统对文件描述符的限制有两个级别</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E9%99%90%E5%88%B6%E6%89%93%E5%BC%80%E7%9A%84%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6"><span class="nav-number">1.0.2.0.2.</span> <span class="nav-text">为什么要限制打开的文件描述符</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.0.3.</span> <span class="nav-text">配置文件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%99%90%E5%88%B6%E8%B5%84%E6%BA%90%E4%BD%BF%E7%94%A8%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.0.3.0.1.</span> <span class="nav-text">限制资源使用的配置文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8F%AF%E4%BB%A5%E9%99%90%E5%88%B6%E7%9A%84%E8%B5%84%E6%BA%90%E7%B1%BB%E5%9E%8B%E5%A6%82%E4%B8%8B"><span class="nav-number">1.0.3.0.2.</span> <span class="nav-text">可以限制的资源类型如下</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E7%BA%A7%E5%88%AB"><span class="nav-number">1.0.4.</span> <span class="nav-text">系统级别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E7%BA%A7%E5%88%AB"><span class="nav-number">1.0.5.</span> <span class="nav-text">用户级别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BD%93%E5%89%8D%E6%89%93%E5%BC%80%E7%9A%84%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6"><span class="nav-number">1.0.6.</span> <span class="nav-text">当前打开的文件描述符</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%B3%BB%E7%BB%9F%E5%BD%93%E5%89%8D%E6%89%93%E5%BC%80%E7%9A%84%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6%E6%95%B0%E9%87%8F"><span class="nav-number">1.0.6.0.1.</span> <span class="nav-text">查看系统当前打开的文件描述符数量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%9F%90%E4%B8%AA%E8%BF%9B%E7%A8%8B%E6%89%93%E5%BC%80%E7%9A%84%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6%E6%95%B0%E9%87%8F"><span class="nav-number">1.0.6.0.2.</span> <span class="nav-text">查看某个进程打开的文件描述符数量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%9C%8B%E4%B8%8B%E5%93%AA%E4%BA%9B%E8%BF%9B%E7%A8%8B%E5%8D%A0%E7%94%A8%E7%9A%84%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6%E6%AF%94%E8%BE%83%E5%A4%9A%EF%BC%8C%E6%8E%92%E4%B8%8B%E5%BA%8F"><span class="nav-number">1.0.6.0.3.</span> <span class="nav-text">看下哪些进程占用的文件描述符比较多，排下序</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E7%9A%84%E6%9F%A5%E7%9C%8B%E6%96%B9%E6%B3%95"><span class="nav-number">1.0.7.</span> <span class="nav-text">错误的查看方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8lsof%E6%9F%A5%E7%9C%8B%E6%89%93%E5%BC%80%E6%96%87%E4%BB%B6%E6%95%B0%E6%98%AF%E9%94%99%E8%AF%AF%E7%9A%84"><span class="nav-number">1.0.7.0.1.</span> <span class="nav-text">使用lsof查看打开文件数是错误的</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A3%E7%A1%AE%E7%9A%84%E6%9F%A5%E7%9C%8B%E6%96%B9%E6%B3%95"><span class="nav-number">1.0.8.</span> <span class="nav-text">正确的查看方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B-proc-%E4%B8%AD%E6%96%87%E4%BB%B6"><span class="nav-number">1.0.8.0.1.</span> <span class="nav-text">查看&#x2F;proc&#x2F;中文件</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mad King</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">26.9k</span>
+  
+</div>
+
+
+
+
+
+
+
+<div>
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv" style='display:none'>
+    本站总访问量 <span id="busuanzi_value_site_pv"></span> 次
+    <span class="post-meta-divider">|</span>
+</span>
+<span id="busuanzi_container_site_uv" style='display:none'>
+    有<span id="busuanzi_value_site_uv"></span>人看过我的博客啦
+</span>
+</div>
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  <script>
+$(function(){
+  $.get('https://api.xdooi.com/motto_en?l=38').then(res=>{
+    $('#edslogan').html('<span style="font-size:14px; color:#666;">'+res.english +'</span><div style="font-size:12px; color:#999; transform:scale(0.8,0.8)">'+res.chinese+'</div>');
+  })
+})
+</script>
+
+  <script>
+$(function(){
+  $.get('https://api.xdooi.com/getWeather').then(res=>{
+    console.log(res);
+    $('#cus_weather_tmp').html(res.now_weather.tmp + '°');
+    $('#cus_weather_location').html(res.basic.parent_city);
+    $('#cus_weather_cond_txt').html(res.now_weather.cond_txt);
+    $('#cus_weather_wind_dir').html(res.now_weather.wind_dir);
+    $('#cus_weather_wind_sc').html(res.now_weather.wind_sc);
+    $('#cus_weather_qlty').html(res.now_air.qlty);
+    $('#cus_weather_aqi').html(res.now_air.aqi);
+    $('#cus_weather_air').css('color',res.now_air.color)
+    // $('#edslogan').html('<span style="font-size:14px; color:#666;">'+res.english +'</span><div style="font-size:12px; color:#999; transform:scale(0.8,0.8)">'+res.chinese+'</div>');
+  })
+})
+</script>
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+      <style>
+        a.gitment-editor-footer-tip { display: none; }
+        .gitment-container.gitment-footer-container { display: none; }
+      </style>
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'harvey-zang',
+            repo: 'gitment',
+            
+            lang: "zh-Hans" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'fb53cfddb088e37c5c3d31eeda4da80baa3b872f',
+            
+                client_id: '7771ca49fb0fcd9f40b5'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.4"></script>
+
+
+  
+
+
+<div class="waifu">
+
+    <!-- 提示框 -->
+    <div class="waifu-tips"></div>
+
+    <!-- 看板娘画布 -->
+    <canvas id="live2d" class="live2d"></canvas>
+
+    <!-- 工具栏 -->
+    <div class="waifu-tool">
+        <span class="fui-home"></span>
+        <span class="fui-chat"></span>
+        <span class="fui-eye"></span>
+        <span class="fui-user"></span>
+        <span class="fui-photo"></span>
+        <span class="fui-info-circle"></span>
+        <span class="fui-cross"></span>
+    </div>
+
+</div>
+
+<script src="/assets/waifu-tips.js"></script>
+<script src="/assets/live2d.js"></script>
+
+<!-- 初始化看板娘，加载 waifu-tips.json -->
+<script type="text/javascript">
+    /* 可直接修改部分参数 */
+    live2d_settings['modelId'] = 5;                  // 默认模型 ID
+    live2d_settings['modelTexturesId'] = 1;          // 默认材质 ID
+    /* 在 initModel 前添加 */
+    initModel("http://madblog.cn/assets/waifu-tips.json")
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1653 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <link rel="stylesheet" type="text/css" href="http://madblog.cn/assets/waifu.css"/>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.jpg?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="Kafka," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一、生产者 生产者三个必选属性  bootstrap.servers  指定broker的地址清单，地址格式为host:port 不需要所有broker的地址，生产者会从给定的broker里查找到其他所有broker信息 至少提供两个broker地址给生产者，保证可用性   key.serializer  由Kafka提供的序列化器 ByteArraySerializer StringSerial">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kafka权威指南笔记（二）">
+<meta property="og:url" content="http://madblog.cn/posts/eb5475e4070bf46d.html">
+<meta property="og:site_name" content="Oh My Mad Blog">
+<meta property="og:description" content="一、生产者 生产者三个必选属性  bootstrap.servers  指定broker的地址清单，地址格式为host:port 不需要所有broker的地址，生产者会从给定的broker里查找到其他所有broker信息 至少提供两个broker地址给生产者，保证可用性   key.serializer  由Kafka提供的序列化器 ByteArraySerializer StringSerial">
+<meta property="og:locale">
+<meta property="article:published_time" content="2020-10-04T16:00:35.000Z">
+<meta property="article:modified_time" content="2021-04-26T11:07:45.357Z">
+<meta property="article:author" content="Mad King">
+<meta property="article:tag" content="Kafka">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://madblog.cn/posts/eb5475e4070bf46d.html"/>
+
+
+
+
+
+  <title>Kafka权威指南笔记（二） | Oh My Mad Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="Oh My Mad Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <a target="_blank" rel="noopener" href="https://github.com/harvey-zang"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Oh My Mad Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">人生如逆旅，我亦是行人。</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://madblog.cn/posts/eb5475e4070bf46d.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1539151696&di=7e7522a3912191d49079c7bfc7173f79&src=http%3A%2F%2Fn1.itc.cn%2Fimg8%2Fwb%2Fsmccloud%2Frecom%2F2015%2F04%2F24%2F142980990481836394.JPEG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Oh My Mad Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Kafka权威指南笔记（二）</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-10-05T00:00:35+08:00">
+                2020-10-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kafka/" itemprop="url" rel="index">
+                    <span itemprop="name">Kafka</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/eb5475e4070bf46d.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/posts/eb5475e4070bf46d.html" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+            <span>热度: </span><span id="busuanzi_value_page_pv"></span><span>℃</span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2.2k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  7
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="一、生产者"><a href="#一、生产者" class="headerlink" title="一、生产者"></a>一、生产者</h4><ol>
+<li><p><strong>生产者三个必选属性</strong></p>
+<ul>
+<li><p>bootstrap.servers</p>
+<ul>
+<li>指定broker的地址清单，地址格式为host:port</li>
+<li>不需要所有broker的地址，生产者会从给定的broker里查找到其他所有broker信息</li>
+<li>至少提供两个broker地址给生产者，保证可用性</li>
+</ul>
+</li>
+<li><p>key.serializer</p>
+<ul>
+<li>由Kafka提供的序列化器<ul>
+<li>ByteArraySerializer</li>
+<li>StringSerializer</li>
+<li>InterSerializer</li>
+</ul>
+</li>
+<li>其他由生产者自定义的序列化器<ul>
+<li>必须被设置为一个实现了org.apache.kafka.common.serialization.Serializer接口的类</li>
+<li>生产者使用这个类，把键对象序列化为字节数组</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>value.serializer</p>
+<ul>
+<li>生产者使用这个类，把值对象序列化为字节数组</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>发送消息的三种方式</strong> </p>
+<ul>
+<li>发送并忘记<ul>
+<li>把消息发送给服务器，但并不关心他是否到达</li>
+</ul>
+</li>
+<li>同步发送<ul>
+<li>使用send()方法发送消息，它会返回一个Future对象，调用get()方法进行等待，就可以知道消息是否发送成功</li>
+</ul>
+</li>
+<li>异步发送<ul>
+<li>调用send()方法，并指定一个回调函数，服务器在返回响应时，调用该函数</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>生产者配置</strong></p>
+<ul>
+<li>acks<ul>
+<li>指定必须要有多少个分区副本收到消息，生产者才会认为消息写入是成功的，此参数对消息丢失有重要影响</li>
+<li>acks=0，生产者在写入消息后，不会等待任何来自服务器的响应，缺点是可能会丢消息，优点是可以达到很高的吞吐量</li>
+<li>acks=1，只要集群的首领节点收到消息，消费者就会收到一个来自服务器的成功响应</li>
+<li>acks=all，只有当所有参与复制的节点全部都收到消息，生产者才会收到一个来自服务器的响应</li>
+</ul>
+</li>
+<li>buffer.memory<ul>
+<li>设置生产者内存缓冲区的大小，生产者用它来缓冲要发送到服务器的消息，如果缓冲满了，send()方法可能被阻塞，也可能抛出异常，该行为取决于如何设置max.block.ms</li>
+</ul>
+</li>
+<li>retries<ul>
+<li>规定生产者收到服务器端返回错误后，重试的次数</li>
+</ul>
+</li>
+<li>retry.backoff.ms<ul>
+<li>每次失败重试等待的时间，默认是100ms</li>
+<li>重试时间 * 重试次数 需要大于kafka集群从崩溃恢复的时间</li>
+</ul>
+</li>
+<li>batch.size<ul>
+<li>当有多少个消息要发送到同一个分区时，消费者会在同一批次发送</li>
+<li>该参数指定了一个批次的内存大小，按字节计算，不是按消息个数</li>
+</ul>
+</li>
+<li>linger.ms<ul>
+<li>生产者在发送批次之前等待更多消息加入批次的时间</li>
+</ul>
+</li>
+<li>client.id<ul>
+<li>可以是任意的字符串，服务器用它来识别消息的来源，也可以用在日志和配额指标里</li>
+</ul>
+</li>
+<li>request.timeout.ms<ul>
+<li>生产者在发送数据等待服务器返回响应的时间</li>
+</ul>
+</li>
+<li>metadata.fetch.timeout.ms<ul>
+<li>生产者在获取元数据时，等待服务器返回响应的时间</li>
+</ul>
+</li>
+<li>timeout.ms<ul>
+<li>broker在等待副本返回确认响应的时间，如果超时，则返回给生产者异常</li>
+</ul>
+</li>
+<li>max.block.ms<ul>
+<li>指定生产者的缓冲区满，或没有可用的元数据时，send()方法阻塞的时间。</li>
+<li>阻塞时间超过max.block.ms后，生产者抛出异常</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="二、消费者"><a href="#二、消费者" class="headerlink" title="二、消费者"></a>二、消费者</h4><ol>
+<li><p><strong>消费者、消费者组、分区</strong></p>
+<ul>
+<li>消费者从属于消费者组，一个组群里的消费者订阅同一个主题，每个消费者接受主题一部分的分区</li>
+<li>分区与消费者是多对一的关系，既每个消费者可以同时消费多个分区，但每个分区只能被一个消费者消费</li>
+<li>如果消费者数量大于分区数量，则会产生空闲的消费者</li>
+<li>不同消费者组可以去同一个topic上读取数据，互不影响</li>
+</ul>
+</li>
+<li><p><strong>消费者组和分区再平衡</strong></p>
+<ul>
+<li>当一个消费者组新增一个消费者，他会接管一部分原先有其他消费者负责的分区进行读取</li>
+<li>当一个消费者关闭或崩溃，他就会离开群组，原本由该消费者读取的分区，将由群组里的其他消费着来消费</li>
+<li>在topic发生变化时，比如topic新增了分区，就会发生分区重分配</li>
+<li>再均衡：分区所有权从一个消费者转移到另一个消费者</li>
+<li>再均衡使得消费者有了高可用和可伸缩特性</li>
+<li>再均衡期间，消费者无法读取消息，造成整个群组短暂不可用</li>
+<li>消费者通过向被指派的broker发送心跳来维持他们和群组的从属关系，以及他们对分区的所有权关系</li>
+<li>消费者会在轮询消息或者发送偏移量时发送心跳</li>
+<li>如果消费者发送心跳超时，会话就会过期，群组就会认为该消费者已死亡，就会触发一次再均衡</li>
+</ul>
+</li>
+<li><p><strong>消费者四个重要属性</strong></p>
+<ul>
+<li>bootstrap.servers<ul>
+<li>指定了kafka集群的连接字符串</li>
+</ul>
+</li>
+<li>key.deserializer<ul>
+<li>序列化器，生产者使用这个类，把字节数组序列化为键对象</li>
+</ul>
+</li>
+<li>value.deserializer<ul>
+<li>序列化器，生产者使用这个类，把字节数组序列化为值对象</li>
+</ul>
+</li>
+<li>group.id<ul>
+<li>指定了KafkaConsumer属于哪一个消费者组</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>订阅主题</strong></p>
+<ul>
+<li>subscribe()方法接受一个主题列表作为参数</li>
+<li>可以调用subscribe()方法时传入一个正则表达式，匹配多个主题，如果有人新创建了主题，切主题与正则表达式匹配，就会触发一次再均衡，消费者就可以读取新添加的主题</li>
+</ul>
+</li>
+<li><p><strong>消费者配置</strong></p>
+<ul>
+<li>fetch.min.bytes<ul>
+<li>指定了消费者从服务器获取记录的最小字节数</li>
+<li>如果可用的数据量小于fetch.min.bytes，那么它会等到有足够的可用数据时才把消息返回给消费者</li>
+<li>如果没有很多可用消息，但是消费者的CPU使用率很高，可以尝试调大该值</li>
+<li>如果消费者比较多，调大该值可以降低broker的负载</li>
+</ul>
+</li>
+<li>fetch.max.wait.ms<ul>
+<li>服务端等待足够数据流入kafka的时间</li>
+<li>如果数据量大于fetch.min.bytes就会立即发送数据</li>
+<li>如果等待时间超过fetch.max.wait.ms就会立即发送数据</li>
+<li>fetch.min.bytes和fetch.max.wait.ms看那个指标先达到</li>
+</ul>
+</li>
+<li>max.patition.fetch.bytes<ul>
+<li>指定服务器从每个分区返回给消费者的最大字节数</li>
+</ul>
+</li>
+<li>session.timeout.ms<ul>
+<li>消费者在认定为死亡之前可以与服务器断开连接的时间</li>
+<li>该值改小可以更快的检测和恢复崩溃节点，但是可能会导致非预期的再均衡</li>
+<li>该值改大可以减少意外的再均衡，但是检测出节点崩溃需要更长的时间</li>
+</ul>
+</li>
+<li>auto.offset.reset<ul>
+<li>指定了消费者在读取一个没有偏移量或者偏移量无效情况下，该如何处理</li>
+<li>latest，默认值，在偏移量无效时，在最新消息处开始读取</li>
+<li>earlist，在偏移量无效时，在起始位置读取分区记录</li>
+</ul>
+</li>
+<li>enable.auto.commit<ul>
+<li>消费者是否自动提交偏移量</li>
+</ul>
+</li>
+<li>patition.assignment.strategy<ul>
+<li>PatitionAssignor根据给定的消费者和主题，决定哪些分区应该被分配给哪个消费者</li>
+<li>Range 默认策略，把主题的若干连续分区分配给消费者</li>
+<li>RangeRobin 把主题所有分区逐个分配给消费者</li>
+</ul>
+</li>
+<li>client.id<ul>
+<li>标识从客户端发来的消息，可以是任意字符</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>提交和偏移量</strong></p>
+<ul>
+<li>更新分区当前位置的操作叫做<strong>提交</strong></li>
+<li>所有分区的便宜量被提交到_consumer_offset的主题中</li>
+<li>如果有发生再均衡，每个消费者可能分到新的分区，就需要去读取该分区最后一次提交的偏移量，然后从偏移量指定的地方继续工作</li>
+<li>如果提交的偏移量小于客户端处理的最后一个消息的偏移量，则两个偏移量之间的消息就会被重复处理</li>
+<li>如果提交的偏移量大于客户端处理的最后一个消息的偏移量，则两个偏移量之间的消息就会被丢失</li>
+<li>提交方式<ul>
+<li>自动提交<ul>
+<li>enable.auto.commit被设为true，每过5秒，客户端就会把最大偏移量提交上去</li>
+<li>提交时间间隔由auto.commit.interval.ms控制</li>
+</ul>
+</li>
+<li>手动提交<ul>
+<li>程序决定何时提交偏移量</li>
+<li>enable.auto.commit被设置为false</li>
+<li>broker对提交请求作出回应之前，会一直阻塞</li>
+</ul>
+</li>
+<li>异步提交<ul>
+<li>异步提交偏移量，不等待返回响应</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+      <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+      
+    </div>
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Mad King
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://madblog.cn/posts/eb5475e4070bf46d.html" title="Kafka权威指南笔记（二）">http://madblog.cn/posts/eb5475e4070bf46d.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Kafka/" rel="tag"> <i class="fa fa-tag"></i> Kafka</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/3a249be0be50662b.html" rel="next" title="Kafka权威指南笔记（一）">
+                <i class="fa fa-chevron-left"></i> Kafka权威指南笔记（一）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/e52afa13e0c050b7.html" rel="prev" title="kong入门笔记">
+                kong入门笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1539151696&di=7e7522a3912191d49079c7bfc7173f79&src=http%3A%2F%2Fn1.itc.cn%2Fimg8%2Fwb%2Fsmccloud%2Frecom%2F2015%2F04%2F24%2F142980990481836394.JPEG"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7Carchive">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+          </div>
+          
+         <div style="width:100%; border-top:1px solid #cdcdcd; border-bottom:1px solid #cdcdcd; margin-bottom:16px; padding-top:10px; text-align:center;">每日du英语<div id="edslogan"></div></div>
+
+         <!--
+<div class="cus_weather" id="cus_weather">
+  <div class="cus_weather_tmp" id="cus_weather_tmp">-</div>
+  <div class="cus_weather_cell">
+    <div class="cus_weather_location" id="cus_weather_location">-</div>
+    <div class="cus_weather_cond_txt" id="cus_weather_cond_txt">-</div>
+    <div class="cus_weather_wind">
+      <span class="cus_weather_wind_dir" id="cus_weather_wind_dir">-</span>
+      <span class="cus_weather_wind_sc" id="cus_weather_wind_sc">0</span>级
+    </div>
+
+    <div class="cus_weather_air" id="cus_weather_air">
+      <span class="cus_weather_qlty" id="cus_weather_qlty">-</span>
+      <span class="cus_weather_aqi" id="cus_weather_aqi">0</span>
+    </div>
+  </div>
+</div>
+-->
+<div id="he-plugin-standard"></div>
+<script>
+WIDGET = {
+  CONFIG: {
+    "layout": 2,
+    "width": "220",
+    "height": "300",
+    "background": 5,
+    "dataColor": "4A4A4A",
+    "borderRadius": 5,
+    "key": "0a5f287552dc4c43b3326c451ed75625"
+  }
+}
+</script>
+<script src="https://widget.qweather.net/standard/static/js/he-standard-common.js?v=2.0"></script>
+
+
+          
+
+          
+            <div class="links-of-author motion-element" style="margin:10px">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/harvey-zang" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:harvey_dent@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://weibo.com/Hodorrrrrrrr" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>微博</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://douban.com/people/your-user-name" target="_blank" title="豆瓣">
+                      
+                        <i class="fa fa-fw fa-douban"></i>豆瓣</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://www.zhihu.com/people/harvey-36-62" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-zhihu"></i>知乎</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E7%94%9F%E4%BA%A7%E8%80%85"><span class="nav-number">1.</span> <span class="nav-text">一、生产者</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%B6%88%E8%B4%B9%E8%80%85"><span class="nav-number">2.</span> <span class="nav-text">二、消费者</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mad King</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">26.9k</span>
+  
+</div>
+
+
+
+
+
+
+
+<div>
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv" style='display:none'>
+    本站总访问量 <span id="busuanzi_value_site_pv"></span> 次
+    <span class="post-meta-divider">|</span>
+</span>
+<span id="busuanzi_container_site_uv" style='display:none'>
+    有<span id="busuanzi_value_site_uv"></span>人看过我的博客啦
+</span>
+</div>
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  <script>
+$(function(){
+  $.get('https://api.xdooi.com/motto_en?l=38').then(res=>{
+    $('#edslogan').html('<span style="font-size:14px; color:#666;">'+res.english +'</span><div style="font-size:12px; color:#999; transform:scale(0.8,0.8)">'+res.chinese+'</div>');
+  })
+})
+</script>
+
+  <script>
+$(function(){
+  $.get('https://api.xdooi.com/getWeather').then(res=>{
+    console.log(res);
+    $('#cus_weather_tmp').html(res.now_weather.tmp + '°');
+    $('#cus_weather_location').html(res.basic.parent_city);
+    $('#cus_weather_cond_txt').html(res.now_weather.cond_txt);
+    $('#cus_weather_wind_dir').html(res.now_weather.wind_dir);
+    $('#cus_weather_wind_sc').html(res.now_weather.wind_sc);
+    $('#cus_weather_qlty').html(res.now_air.qlty);
+    $('#cus_weather_aqi').html(res.now_air.aqi);
+    $('#cus_weather_air').css('color',res.now_air.color)
+    // $('#edslogan').html('<span style="font-size:14px; color:#666;">'+res.english +'</span><div style="font-size:12px; color:#999; transform:scale(0.8,0.8)">'+res.chinese+'</div>');
+  })
+})
+</script>
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+      <style>
+        a.gitment-editor-footer-tip { display: none; }
+        .gitment-container.gitment-footer-container { display: none; }
+      </style>
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'harvey-zang',
+            repo: 'gitment',
+            
+            lang: "zh-Hans" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'fb53cfddb088e37c5c3d31eeda4da80baa3b872f',
+            
+                client_id: '7771ca49fb0fcd9f40b5'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.4"></script>
+
+
+  
+
+
+<div class="waifu">
+
+    <!-- 提示框 -->
+    <div class="waifu-tips"></div>
+
+    <!-- 看板娘画布 -->
+    <canvas id="live2d" class="live2d"></canvas>
+
+    <!-- 工具栏 -->
+    <div class="waifu-tool">
+        <span class="fui-home"></span>
+        <span class="fui-chat"></span>
+        <span class="fui-eye"></span>
+        <span class="fui-user"></span>
+        <span class="fui-photo"></span>
+        <span class="fui-info-circle"></span>
+        <span class="fui-cross"></span>
+    </div>
+
+</div>
+
+<script src="/assets/waifu-tips.js"></script>
+<script src="/assets/live2d.js"></script>
+
+<!-- 初始化看板娘，加载 waifu-tips.json -->
+<script type="text/javascript">
+    /* 可直接修改部分参数 */
+    live2d_settings['modelId'] = 5;                  // 默认模型 ID
+    live2d_settings['modelTexturesId'] = 1;          // 默认材质 ID
+    /* 在 initModel 前添加 */
+    initModel("http://madblog.cn/assets/waifu-tips.json")
+</script>
+
+</body>
+</html>

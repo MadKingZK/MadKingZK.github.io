@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <link rel="stylesheet" type="text/css" href="http://madblog.cn/assets/waifu.css"/>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.jpg?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="kong," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="kong部署APT资料库您也可以通过APT安装Kong；请按照以下页面上的“设置我的方法”部分中的说明进行操作，将分发设置 为适当的值（lsb_release -sc）（例如precise），并将组件设置为main。  Deb资料库  安装 安装kong  如果要下载软件包，请执行：  123$ sudo apt-get update$ sudo apt-get install openssl l">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kong入门笔记">
+<meta property="og:url" content="http://madblog.cn/posts/e52afa13e0c050b7.html">
+<meta property="og:site_name" content="Oh My Mad Blog">
+<meta property="og:description" content="kong部署APT资料库您也可以通过APT安装Kong；请按照以下页面上的“设置我的方法”部分中的说明进行操作，将分发设置 为适当的值（lsb_release -sc）（例如precise），并将组件设置为main。  Deb资料库  安装 安装kong  如果要下载软件包，请执行：  123$ sudo apt-get update$ sudo apt-get install openssl l">
+<meta property="og:locale">
+<meta property="article:published_time" content="2020-12-05T15:24:19.000Z">
+<meta property="article:modified_time" content="2021-04-26T11:07:45.358Z">
+<meta property="article:author" content="Mad King">
+<meta property="article:tag" content="kong">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://madblog.cn/posts/e52afa13e0c050b7.html"/>
+
+
+
+
+
+  <title>kong入门笔记 | Oh My Mad Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="Oh My Mad Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <a target="_blank" rel="noopener" href="https://github.com/harvey-zang"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Oh My Mad Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">人生如逆旅，我亦是行人。</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://madblog.cn/posts/e52afa13e0c050b7.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1539151696&di=7e7522a3912191d49079c7bfc7173f79&src=http%3A%2F%2Fn1.itc.cn%2Fimg8%2Fwb%2Fsmccloud%2Frecom%2F2015%2F04%2F24%2F142980990481836394.JPEG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Oh My Mad Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">kong入门笔记</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-12-05T23:24:19+08:00">
+                2020-12-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/kong/" itemprop="url" rel="index">
+                    <span itemprop="name">kong</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/e52afa13e0c050b7.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/posts/e52afa13e0c050b7.html" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+            <span>热度: </span><span id="busuanzi_value_page_pv"></span><span>℃</span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2.9k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  15
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="kong部署"><a href="#kong部署" class="headerlink" title="kong部署"></a>kong部署</h2><h4 id="APT资料库"><a href="#APT资料库" class="headerlink" title="APT资料库"></a>APT资料库</h4><p><strong>您也可以通过APT安装Kong；请按照以下页面上的“设置我的方法”部分中的说明进行操作，将分发设置 为适当的值（lsb_release -sc）（例如precise），并将组件设置为main。</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://bintray.com/kong/kong-deb">Deb资料库</a></li>
+</ul>
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><ol>
+<li>安装kong</li>
+</ol>
+<p><strong>如果要下载软件包，请执行：</strong></p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get update</span><br><span class="line">$ sudo apt-get install openssl libpcre3 procps perl</span><br><span class="line">$ sudo dpkg -i kong-2.1.2.*.deb</span><br></pre></td></tr></table></figure>
+<p><strong>如果您使用apt repository，请执行：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get update</span><br><span class="line">$ sudo apt-get install -y apt-transport-https curl lsb-core</span><br><span class="line">$ <span class="built_in">echo</span> <span class="string">&quot;deb https://kong.bintray.com/kong-deb <span class="subst">$(lsb_release -sc)</span> main&quot;</span> | sudo tee -a /etc/apt/sources.list</span><br><span class="line">$ curl -o bintray.key https://bintray.com/user/downloadSubjectPublicKey?username=bintray</span><br><span class="line">$ sudo apt-key add bintray.key</span><br><span class="line">$ sudo apt-get update</span><br><span class="line">$ sudo apt-get install -y kong</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>准备数据库或声明性配置文件</li>
+</ol>
+<p>Kong可以在有或没有数据库的情况下运行。</p>
+<p>使用数据库时，将使用kong.conf配置文件在启动时设置Kong的配置属性，并将数据库用作所有已配置实体（例如Kong代理的路由和服务）的存储。</p>
+<p>不使用数据库时，将使用kong.conf其配置属性和一个kong.yml 文件将实体指定为声明性配置。</p>
+<ul>
+<li>使用数据库</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://docs.konghq.com/2.1.x/configuration#database">配置</a> Kong，以便它可以连接到您的数据库。Kong支持<a target="_blank" rel="noopener" href="http://www.postgresql.org/">PostgreSQL 9.5+</a>和<a target="_blank" rel="noopener" href="http://cassandra.apache.org/">Cassandra 3.xx</a>作为其数据存储。</p>
+<p>如果您使用的是Postgres，请在启动Kong之前配置数据库和用户，即：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CREATE USER kong; CREATE DATABASE kong OWNER kong;</span><br></pre></td></tr></table></figure>
+<p>现在，运行Kong迁移：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> $ kong migrations bootstrap [-c /path/to/kong.conf]</span><br><span class="line">Kong &lt;0.15的注意事项：Kong版本低于0.15（最高0.14）时，请使用up子命令代替bootstrap。还要注意，Kong &lt;0.15时，永远不能同时运行迁移。一次只能有一个Kong节点执行迁移。对于0.15、1.0及更高版本，此限制被取消。</span><br></pre></td></tr></table></figure>
+<ul>
+<li>没有数据库</li>
+</ul>
+<p>如果要在<a target="_blank" rel="noopener" href="https://docs.konghq.com/2.1.x/db-less-and-declarative-config/">无数据库模式</a>下运行Kong ，则应首先生成声明性配置文件。以下命令将kong.yml 在您当前的文件夹中生成一个文件。它包含有关如何填写的说明。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ kong config init</span><br></pre></td></tr></table></figure>
+
+<p>填满kong.yml文件后，编辑kong.conf文件。将database选项设置为off，并将declarative_config选项设置为kong.yml文件的路径：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">database = off</span><br><span class="line">declarative_config = /path/to/kong.yml</span><br></pre></td></tr></table></figure>
+<p> 3. 启动Kong</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ kong start [-c /path/to/kong.conf]</span><br></pre></td></tr></table></figure>
+<p> 4. 使用Kong</p>
+<p>Kong正在运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -i http://localhost:8001/</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://docs.konghq.com/latest/getting-started/quickstart">5分钟的快速入门</a>快速学习如何使用Kong 。</p>
+<h2 id="kong管理API"><a href="#kong管理API" class="headerlink" title="kong管理API"></a>kong管理API</h2><ol>
+<li>查看kong状态</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~<span class="comment"># curl -X GET http://192.168.11.14:8001 2&gt;/dev/null | jq &#x27;.&#x27;</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;plugins&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;enabled_in_cluster&quot;</span>: [</span><br><span class="line">      <span class="string">&quot;hmac-auth&quot;</span>,</span><br><span class="line">      <span class="string">&quot;basic-auth&quot;</span>,</span><br><span class="line">      <span class="string">&quot;oauth2&quot;</span>,</span><br><span class="line">      <span class="string">&quot;cors&quot;</span>,</span><br><span class="line">      <span class="string">&quot;jwt&quot;</span>,</span><br><span class="line">      <span class="string">&quot;prometheus&quot;</span>,</span><br><span class="line">      <span class="string">&quot;key-auth&quot;</span>,</span><br><span class="line">      <span class="string">&quot;kong-path-whitelist&quot;</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&quot;available_on_server&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;correlation-id&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;pre-function&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;cors&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;ldap-auth&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;loggly&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;hmac-auth&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;zipkin&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;request-size-limiting&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;azure-functions&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;request-transformer&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;oauth2&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;response-transformer&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;ip-restriction&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;statsd&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;jwt&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;proxy-cache&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;basic-auth&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;key-auth&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;http-log&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;datadog&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;tcp-log&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;kong-path-whitelist&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;post-function&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;prometheus&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;acl&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;kubernetes-sidecar-injector&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;syslog&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;file-log&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;udp-log&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;response-ratelimiting&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;aws-lambda&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;bot-detection&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;rate-limiting&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;request-termination&quot;</span>: <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">&quot;tagline&quot;</span>: <span class="string">&quot;Welcome to kong&quot;</span>,</span><br><span class="line">  <span class="string">&quot;configuration&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;error_default_type&quot;</span>: <span class="string">&quot;text/plain&quot;</span>,</span><br><span class="line">    <span class="string">&quot;admin_ssl_enabled&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">&quot;proxy_access_log&quot;</span>: <span class="string">&quot;/data/logs/kong/access.log&quot;</span>,</span><br><span class="line">    <span class="string">&quot;trusted_ips&quot;</span>: [</span><br><span class="line">      <span class="string">&quot;0.0.0.0/0&quot;</span>,</span><br><span class="line">      <span class="string">&quot;::/0&quot;</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&quot;prefix&quot;</span>: <span class="string">&quot;/usr/local/kong&quot;</span>,</span><br><span class="line">    <span class="string">&quot;loaded_plugins&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;correlation-id&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;pre-function&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;cors&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;ldap-auth&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;loggly&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;hmac-auth&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;zipkin&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;request-size-limiting&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;azure-functions&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;request-transformer&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;oauth2&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;response-transformer&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;ip-restriction&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;statsd&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;jwt&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;proxy-cache&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;basic-auth&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;key-auth&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;http-log&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;datadog&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;tcp-log&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;syslog&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;post-function&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;rate-limiting&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;acl&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;kubernetes-sidecar-injector&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;bot-detection&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;file-log&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;udp-log&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;response-ratelimiting&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;aws-lambda&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;prometheus&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;kong-path-whitelist&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;request-termination&quot;</span>: <span class="literal">true</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&quot;cassandra_username&quot;</span>: <span class="string">&quot;kong&quot;</span>,</span><br><span class="line">    <span class="string">&quot;dns_resolver&quot;</span>: [</span><br><span class="line">      <span class="string">&quot;127.0.0.1:8600&quot;</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&quot;pg_user&quot;</span>: <span class="string">&quot;kong&quot;</span>,</span><br><span class="line">    <span class="string">&quot;mem_cache_size&quot;</span>: <span class="string">&quot;512m&quot;</span>,</span><br><span class="line">    <span class="string">&quot;ssl_ciphers&quot;</span>: <span class="string">&quot;ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-AAAA1305:ECDHE-RSA-CHACHA20-AAAA1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-AAA-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256&quot;</span>,</span><br><span class="line">    <span class="string">&quot;nginx_admin_directives&quot;</span>: &#123;&#125;,</span><br><span class="line">    <span class="string">&quot;nginx_http_directives&quot;</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="string">&quot;value&quot;</span>: <span class="string">&quot;prometheus_metrics 5m&quot;</span>,</span><br><span class="line">        <span class="string">&quot;name&quot;</span>: <span class="string">&quot;lua_shared_dict&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&quot;pg_host&quot;</span>: <span class="string">&quot;127.0.0.1&quot;</span>,</span><br><span class="line">    <span class="string">&quot;nginx_acc_logs&quot;</span>: <span class="string">&quot;/usr/local/kong/logs/access.log&quot;</span>,</span><br><span class="line">    <span class="string">&quot;pg_semaphore_timeout&quot;</span>: 60000,</span><br><span class="line">    <span class="string">&quot;proxy_listen&quot;</span>: [</span><br><span class="line">      <span class="string">&quot;0.0.0.0:8000&quot;</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&quot;client_ssl_cert_default&quot;</span>: <span class="string">&quot;/usr/local/kong/ssl/kong-default.crt&quot;</span>,</span><br><span class="line">    <span class="string">&quot;cassandra_ssl&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">&quot;db_update_frequency&quot;</span>: 5,</span><br><span class="line">    <span class="string">&quot;db_update_propagation&quot;</span>: 3,</span><br><span class="line">    <span class="string">&quot;stream_listen&quot;</span>: [</span><br><span class="line">      <span class="string">&quot;off&quot;</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&quot;nginx_err_logs&quot;</span>: <span class="string">&quot;/usr/local/kong/logs/error.log&quot;</span>,</span><br><span class="line">    <span class="string">&quot;cassandra_port&quot;</span>: 9042,</span><br><span class="line">    <span class="string">&quot;dns_order&quot;</span>: [</span><br><span class="line">      <span class="string">&quot;LAST&quot;</span>,</span><br><span class="line">      <span class="string">&quot;SRV&quot;</span>,</span><br><span class="line">      <span class="string">&quot;A&quot;</span>,</span><br><span class="line">      <span class="string">&quot;CNAME&quot;</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&quot;dns_error_ttl&quot;</span>: 1,</span><br><span class="line">    <span class="string">&quot;headers&quot;</span>: [</span><br><span class="line">      <span class="string">&quot;server_tokens&quot;</span>,</span><br><span class="line">      <span class="string">&quot;latency_tokens&quot;</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&quot;cassandra_lb_policy&quot;</span>: <span class="string">&quot;RequestRoundRobin&quot;</span>,</span><br><span class="line">    <span class="string">&quot;nginx_sproxy_directives&quot;</span>: &#123;&#125;,</span><br><span class="line">    <span class="string">&quot;origins&quot;</span>: &#123;&#125;,</span><br><span class="line">    <span class="string">&quot;database&quot;</span>: <span class="string">&quot;cassandra&quot;</span>,</span><br><span class="line">    <span class="string">&quot;pg_database&quot;</span>: <span class="string">&quot;kong&quot;</span>,</span><br><span class="line">    <span class="string">&quot;nginx_worker_processes&quot;</span>: <span class="string">&quot;auto&quot;</span>,</span><br><span class="line">    <span class="string">&quot;lua_package_cpath&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">    <span class="string">&quot;admin_acc_logs&quot;</span>: <span class="string">&quot;/usr/local/kong/logs/admin_access.log&quot;</span>,</span><br><span class="line">    <span class="string">&quot;lua_package_path&quot;</span>: <span class="string">&quot;/data/server/?.lua;;&quot;</span>,</span><br><span class="line">    <span class="string">&quot;nginx_pid&quot;</span>: <span class="string">&quot;/usr/local/kong/pids/nginx.pid&quot;</span>,</span><br><span class="line">    <span class="string">&quot;upstream_keepalive&quot;</span>: 60,</span><br><span class="line">    <span class="string">&quot;admin_access_log&quot;</span>: <span class="string">&quot;/data/logs/kong/admin_access.log&quot;</span>,</span><br><span class="line">    <span class="string">&quot;cassandra_data_centers&quot;</span>: [</span><br><span class="line">      <span class="string">&quot;dc1:2&quot;</span>,</span><br><span class="line">      <span class="string">&quot;dc2:3&quot;</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&quot;ssl_cert_key_default&quot;</span>: <span class="string">&quot;/usr/local/kong/ssl/kong-default.key&quot;</span>,</span><br><span class="line">    <span class="string">&quot;nginx_conf&quot;</span>: <span class="string">&quot;/usr/local/kong/nginx.conf&quot;</span>,</span><br><span class="line">    <span class="string">&quot;pg_max_concurrent_queries&quot;</span>: 0,</span><br><span class="line">    <span class="string">&quot;cassandra_repl_factor&quot;</span>: 2,</span><br><span class="line">    <span class="string">&quot;dns_stale_ttl&quot;</span>: 4,</span><br><span class="line">    <span class="string">&quot;proxy_listeners&quot;</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="string">&quot;transparent&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="string">&quot;ssl&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="string">&quot;ip&quot;</span>: <span class="string">&quot;0.0.0.0&quot;</span>,</span><br><span class="line">        <span class="string">&quot;proxy_protocol&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="string">&quot;port&quot;</span>: 8000,</span><br><span class="line">        <span class="string">&quot;http2&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="string">&quot;listener&quot;</span>: <span class="string">&quot;0.0.0.0:8000&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&quot;proxy_ssl_enabled&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">&quot;ssl_cert_csr_default&quot;</span>: <span class="string">&quot;/usr/local/kong/ssl/kong-default.csr&quot;</span>,</span><br><span class="line">    <span class="string">&quot;db_cache_warmup_entities&quot;</span>: [</span><br><span class="line">      <span class="string">&quot;services&quot;</span>,</span><br><span class="line">      <span class="string">&quot;plugins&quot;</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&quot;enabled_headers&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;latency_tokens&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;X-Kong-Proxy-Latency&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;Via&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;server_tokens&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;Server&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;X-Kong-Upstream-Latency&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">&quot;X-Kong-Upstream-Status&quot;</span>: <span class="literal">false</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&quot;admin_ssl_cert_default&quot;</span>: <span class="string">&quot;/usr/local/kong/ssl/admin-kong-default.crt&quot;</span>,</span><br><span class="line">    <span class="string">&quot;dns_no_sync&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">&quot;db_resurrect_ttl&quot;</span>: 3600,</span><br><span class="line">    <span class="string">&quot;stream_listeners&quot;</span>: &#123;&#125;,</span><br><span class="line">    <span class="string">&quot;cassandra_consistency&quot;</span>: <span class="string">&quot;ONE&quot;</span>,</span><br><span class="line">    <span class="string">&quot;client_max_body_size&quot;</span>: <span class="string">&quot;0&quot;</span>,</span><br><span class="line">    <span class="string">&quot;admin_error_log&quot;</span>: <span class="string">&quot;/data/logs/kong/admin_error.log&quot;</span>,</span><br><span class="line">    <span class="string">&quot;pg_ssl_verify&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">&quot;dns_not_found_ttl&quot;</span>: 30,</span><br><span class="line">    <span class="string">&quot;pg_ssl&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">&quot;pg_timeout&quot;</span>: 5000,</span><br><span class="line">    <span class="string">&quot;client_ssl&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">&quot;cassandra_repl_strategy&quot;</span>: <span class="string">&quot;SimpleStrategy&quot;</span>,</span><br><span class="line">    <span class="string">&quot;anonymous_reports&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">&quot;log_level&quot;</span>: <span class="string">&quot;notice&quot;</span>,</span><br><span class="line">    <span class="string">&quot;ssl_cipher_suite&quot;</span>: <span class="string">&quot;modern&quot;</span>,</span><br><span class="line">    <span class="string">&quot;nginx_proxy_directives&quot;</span>: &#123;&#125;,</span><br><span class="line">    <span class="string">&quot;nginx_kong_conf&quot;</span>: <span class="string">&quot;/usr/local/kong/nginx-kong.conf&quot;</span>,</span><br><span class="line">    <span class="string">&quot;cassandra_schema_consensus_timeout&quot;</span>: 10000,</span><br><span class="line">    <span class="string">&quot;dns_hostsfile&quot;</span>: <span class="string">&quot;/etc/hosts&quot;</span>,</span><br><span class="line">    <span class="string">&quot;admin_listeners&quot;</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="string">&quot;transparent&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="string">&quot;ssl&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="string">&quot;ip&quot;</span>: <span class="string">&quot;0.0.0.0&quot;</span>,</span><br><span class="line">        <span class="string">&quot;proxy_protocol&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="string">&quot;port&quot;</span>: 8001,</span><br><span class="line">        <span class="string">&quot;http2&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="string">&quot;listener&quot;</span>: <span class="string">&quot;0.0.0.0:8001&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&quot;lua_ssl_verify_depth&quot;</span>: 1,</span><br><span class="line">    <span class="string">&quot;plugins&quot;</span>: [</span><br><span class="line">      <span class="string">&quot;bundled&quot;</span>,</span><br><span class="line">      <span class="string">&quot;kong-path-whitelist&quot;</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&quot;real_ip_header&quot;</span>: <span class="string">&quot;X-Real-IP&quot;</span>,</span><br><span class="line">    <span class="string">&quot;admin_ssl_cert_key_default&quot;</span>: <span class="string">&quot;/usr/local/kong/ssl/admin-kong-default.key&quot;</span>,</span><br><span class="line">    <span class="string">&quot;cassandra_ssl_verify&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">&quot;cassandra_timeout&quot;</span>: 5000,</span><br><span class="line">    <span class="string">&quot;cassandra_contact_points&quot;</span>: [</span><br><span class="line">      <span class="string">&quot;192.168.11.14&quot;</span>,</span><br><span class="line">      <span class="string">&quot;192.168.11.15&quot;</span>,</span><br><span class="line">      <span class="string">&quot;192.168.11.16&quot;</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&quot;real_ip_recursive&quot;</span>: <span class="string">&quot;off&quot;</span>,</span><br><span class="line">    <span class="string">&quot;proxy_error_log&quot;</span>: <span class="string">&quot;/data/logs/kong/error.log&quot;</span>,</span><br><span class="line">    <span class="string">&quot;client_ssl_cert_key_default&quot;</span>: <span class="string">&quot;/usr/local/kong/ssl/kong-default.key&quot;</span>,</span><br><span class="line">    <span class="string">&quot;nginx_daemon&quot;</span>: <span class="string">&quot;off&quot;</span>,</span><br><span class="line">    <span class="string">&quot;router_consistency&quot;</span>: <span class="string">&quot;strict&quot;</span>,</span><br><span class="line">    <span class="string">&quot;kong_env&quot;</span>: <span class="string">&quot;/usr/local/kong/.kong_env&quot;</span>,</span><br><span class="line">    <span class="string">&quot;nginx_stream_directives&quot;</span>: &#123;&#125;,</span><br><span class="line">    <span class="string">&quot;pg_port&quot;</span>: 5432,</span><br><span class="line">    <span class="string">&quot;nginx_kong_stream_conf&quot;</span>: <span class="string">&quot;/usr/local/kong/nginx-kong-stream.conf&quot;</span>,</span><br><span class="line">    <span class="string">&quot;client_body_buffer_size&quot;</span>: <span class="string">&quot;8k&quot;</span>,</span><br><span class="line">    <span class="string">&quot;ssl_preread_enabled&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">&quot;nginx_optimizations&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">&quot;lua_socket_pool_size&quot;</span>: 30,</span><br><span class="line">    <span class="string">&quot;cassandra_keyspace&quot;</span>: <span class="string">&quot;kong&quot;</span>,</span><br><span class="line">    <span class="string">&quot;ssl_cert_default&quot;</span>: <span class="string">&quot;/usr/local/kong/ssl/kong-default.crt&quot;</span>,</span><br><span class="line">    <span class="string">&quot;db_cache_ttl&quot;</span>: 30,</span><br><span class="line">    <span class="string">&quot;admin_listen&quot;</span>: [</span><br><span class="line">      <span class="string">&quot;0.0.0.0:8001&quot;</span></span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">&quot;version&quot;</span>: <span class="string">&quot;1.2.1&quot;</span>,</span><br><span class="line">  <span class="string">&quot;node_id&quot;</span>: <span class="string">&quot;115987c1-7ad5-454a-a472-4129445812fc&quot;</span>,</span><br><span class="line">  <span class="string">&quot;lua_version&quot;</span>: <span class="string">&quot;LuaJIT 2.1.0-beta3&quot;</span>,</span><br><span class="line">  <span class="string">&quot;prng_seeds&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;pid: 17466&quot;</span>: 335121721917,</span><br><span class="line">    <span class="string">&quot;pid: 12395&quot;</span>: 282226810415,</span><br><span class="line">    <span class="string">&quot;pid: 12397&quot;</span>: 169518222912,</span><br><span class="line">    <span class="string">&quot;pid: 12394&quot;</span>: 251912312341,</span><br><span class="line">    <span class="string">&quot;pid: 12396&quot;</span>: 220116882062</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">&quot;timers&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;pending&quot;</span>: 4,</span><br><span class="line">    <span class="string">&quot;running&quot;</span>: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">&quot;hostname&quot;</span>: <span class="string">&quot;kong&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>添加服务</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~<span class="comment"># curl -X POST http://192.168.11.14:8001/services --data name=madkingtest_service --data url=&#x27;http://madkingtest.madblog.cn&#x27;</span></span><br><span class="line"> </span><br><span class="line">&#123;<span class="string">&quot;host&quot;</span>:<span class="string">&quot;madkingtest.madblog.cn&quot;</span>,<span class="string">&quot;created_at&quot;</span>:1597739445,<span class="string">&quot;connect_timeout&quot;</span>:60000,<span class="string">&quot;id&quot;</span>:<span class="string">&quot;6e11c1e6-470c-439b-b246-a3be070b120f&quot;</span>,<span class="string">&quot;protocol&quot;</span>:<span class="string">&quot;http&quot;</span>,<span class="string">&quot;name&quot;</span>:<span class="string">&quot;madkingtest_service&quot;</span>,<span class="string">&quot;read_timeout&quot;</span>:60000,<span class="string">&quot;port&quot;</span>:80,<span class="string">&quot;path&quot;</span>:null,<span class="string">&quot;updated_at&quot;</span>:1597739445,<span class="string">&quot;retries&quot;</span>:5,<span class="string">&quot;write_timeout&quot;</span>:60000,<span class="string">&quot;tags&quot;</span>:null&#125;ro</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>查询已添加的服务</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~<span class="comment"># curl http://192.168.11.14:8001/services/madkingtest_service 2&gt;/dev/null | jq .</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;host&quot;</span>: <span class="string">&quot;madkingtest.madblog.cn&quot;</span>,</span><br><span class="line">  <span class="string">&quot;created_at&quot;</span>: 1597739445,</span><br><span class="line">  <span class="string">&quot;connect_timeout&quot;</span>: 60000,</span><br><span class="line">  <span class="string">&quot;id&quot;</span>: <span class="string">&quot;6e11c1e6-470c-439b-b246-a3be070b120f&quot;</span>,</span><br><span class="line">  <span class="string">&quot;protocol&quot;</span>: <span class="string">&quot;http&quot;</span>,</span><br><span class="line">  <span class="string">&quot;name&quot;</span>: <span class="string">&quot;madkingtest_service&quot;</span>,</span><br><span class="line">  <span class="string">&quot;read_timeout&quot;</span>: 60000,</span><br><span class="line">  <span class="string">&quot;port&quot;</span>: 80,</span><br><span class="line">  <span class="string">&quot;path&quot;</span>: null,</span><br><span class="line">  <span class="string">&quot;updated_at&quot;</span>: 1597739445,</span><br><span class="line">  <span class="string">&quot;retries&quot;</span>: 5,</span><br><span class="line">  <span class="string">&quot;write_timeout&quot;</span>: 60000,</span><br><span class="line">  <span class="string">&quot;tags&quot;</span>: null</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>添加路由</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST http://192.168.11.14:8001/services/madkingtest_service/routes --data <span class="string">&#x27;paths[]=/mock&#x27;</span> --data <span class="string">&#x27;name=mocking&#x27;</span></span><br><span class="line">&#123;<span class="string">&quot;id&quot;</span>:<span class="string">&quot;60cc71c8-4203-41d0-b0bb-126e6aceaff0&quot;</span>,<span class="string">&quot;tags&quot;</span>:null,<span class="string">&quot;paths&quot;</span>:[<span class="string">&quot;\/mock&quot;</span>],<span class="string">&quot;destinations&quot;</span>:null,<span class="string">&quot;protocols&quot;</span>:[<span class="string">&quot;http&quot;</span>,<span class="string">&quot;https&quot;</span>],<span class="string">&quot;created_at&quot;</span>:1597739873,<span class="string">&quot;snis&quot;</span>:null,<span class="string">&quot;hosts&quot;</span>:null,<span class="string">&quot;name&quot;</span>:<span class="string">&quot;mocking&quot;</span>,<span class="string">&quot;preserve_host&quot;</span>:<span class="literal">false</span>,<span class="string">&quot;regex_priority&quot;</span>:0,<span class="string">&quot;strip_path&quot;</span>:<span class="literal">true</span>,<span class="string">&quot;sources&quot;</span>:null,<span class="string">&quot;updated_at&quot;</span>:1597739873,<span class="string">&quot;https_redirect_status_code&quot;</span>:426,<span class="string">&quot;service&quot;</span>:&#123;<span class="string">&quot;id&quot;</span>:<span class="string">&quot;6e11c1e6-470c-439b-b246-a3be070b120f&quot;</span>&#125;,<span class="string">&quot;methods&quot;</span>:null&#125;</span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>限制速率 (启用”速率限制“插件，将速率限制设置为每分钟5次)</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">curl -i -X POST http://&lt;admin-hostname&gt;:8001/plugins \</span><br><span class="line">--data <span class="string">&quot;name=rate-limiting&quot;</span> \</span><br><span class="line">--data <span class="string">&quot;config.minute=5&quot;</span> \</span><br><span class="line">--data <span class="string">&quot;config.policy=local&quot;</span></span><br></pre></td></tr></table></figure>
+<h2 id="kong配置"><a href="#kong配置" class="headerlink" title="kong配置"></a>kong配置</h2><ol>
+<li>kong.conf</li>
+</ol>
+<ul>
+<li>kong安装完后，附带有一个默认配置文件，/etc/kong/kong.conf.default</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp /etc/kong/kong.conf.default /etc/kong/kong.conf</span><br></pre></td></tr></table></figure>
+<ul>
+<li>如果注释掉了配置中的所有值，则Kong将使用默认设置运行。开始时，Kong查找可能包含配置文件的几个默认位置:</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/etc/kong/kong.conf</span><br><span class="line">/etc/kong.conf</span><br></pre></td></tr></table></figure>
+<ul>
+<li>可以使用以下check命令来验证设置的完整性</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@kong:~<span class="comment"># kong check /etc/kong/kong.conf</span></span><br><span class="line">configuration at /etc/kong/kong.conf is valid</span><br></pre></td></tr></table></figure>
+<ul>
+<li>从配置文件中加载属性时，Kong还将寻找同名的环境变量。这使您可以通过环境变量完全配置Kong，例如，这对于基于容器的基础结构非常方便。<br>要使用环境变量覆盖设置，请声明一个环境变量，其名称为该设置的名称，并带有前缀KONG_和大写字母。<br>例如：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">log_level = debug <span class="comment"># in kong.conf</span></span><br></pre></td></tr></table></figure>
+<p>可以用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">export</span> KONG_LOG_LEVEL=error</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>kong.conf 注入nginx指令</li>
+</ol>
+<ul>
+<li>注入单个nginx指令：添加到kong.conf文件中的任何前缀为的条目nginx_http_， nginx_proxy_或者nginx_admin_通过删除前缀将其转换为等效的Nginx指令，并将其添加到Nginx配置的相应部分<ul>
+<li>前缀为的条目nginx_http_将注入到整体http 块指令中</li>
+<li>前缀为的条目nginx_proxy_将被注入到server处理Kong代理端口的block指令中</li>
+<li>前缀为的条目nginx_admin_将注入到server处理Kong的Admin API端口的block指令中</li>
+</ul>
+</li>
+<li>在kong.conf 中加入配置：<ul>
+<li>nginx_proxy_large_client_header_buffers=16 128k</li>
+</ul>
+</li>
+<li>在kong的nginx.conf中可以看到<ul>
+<li>large_client_header_buffers 16 128k;</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li>通过注入的nginx指令包含文件</li>
+</ol>
+<p>nginx的配置，如果想增加整个server块，可以使用nginx_http_include向nginx中注入指令，指向包含其他Nginx设置的文件。</p>
+<p>例如有配置文件my-server.conf</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># custom server</span></span><br><span class="line">server &#123;</span><br><span class="line">  listen 2112;</span><br><span class="line">  location / &#123;</span><br><span class="line">    <span class="comment"># ...more settings...</span></span><br><span class="line">    <span class="built_in">return</span> 200;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在kong.conf文件中添加：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx_http_include = /path/to/your/my-server.kong.conf</span><br></pre></td></tr></table></figure>
+<p>也可以通过环境变量进行配置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">export</span> KONG_NGINX_HTTP_INCLUDE=<span class="string">&quot;/path/to/your/my-server.kong.conf&quot;</span></span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>相关配置举例：</li>
+</ol>
+<ul>
+<li>配置代理服务端口proxy_listen = 0.0.0.0:443 ssl</li>
+<li>打开http2连接</li>
+<li>proxy_listen = 0.0.0.0:443 http2 ssl</li>
+<li>配置管理服务端口，打开http2admin_listen = 127.0.0.1:8444 http2 ssl</li>
+<li>状态查询端口</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+      <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+      
+    </div>
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Mad King
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://madblog.cn/posts/e52afa13e0c050b7.html" title="kong入门笔记">http://madblog.cn/posts/e52afa13e0c050b7.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/kong/" rel="tag"> <i class="fa fa-tag"></i> kong</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/eb5475e4070bf46d.html" rel="next" title="Kafka权威指南笔记（二）">
+                <i class="fa fa-chevron-left"></i> Kafka权威指南笔记（二）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/0d0806df1fec8d39.html" rel="prev" title="Atlassian全软件+插件破解与部署(confluece、jira、fisheye等)">
+                Atlassian全软件+插件破解与部署(confluece、jira、fisheye等) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1539151696&di=7e7522a3912191d49079c7bfc7173f79&src=http%3A%2F%2Fn1.itc.cn%2Fimg8%2Fwb%2Fsmccloud%2Frecom%2F2015%2F04%2F24%2F142980990481836394.JPEG"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7Carchive">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+          </div>
+          
+         <div style="width:100%; border-top:1px solid #cdcdcd; border-bottom:1px solid #cdcdcd; margin-bottom:16px; padding-top:10px; text-align:center;">每日du英语<div id="edslogan"></div></div>
+
+         <!--
+<div class="cus_weather" id="cus_weather">
+  <div class="cus_weather_tmp" id="cus_weather_tmp">-</div>
+  <div class="cus_weather_cell">
+    <div class="cus_weather_location" id="cus_weather_location">-</div>
+    <div class="cus_weather_cond_txt" id="cus_weather_cond_txt">-</div>
+    <div class="cus_weather_wind">
+      <span class="cus_weather_wind_dir" id="cus_weather_wind_dir">-</span>
+      <span class="cus_weather_wind_sc" id="cus_weather_wind_sc">0</span>级
+    </div>
+
+    <div class="cus_weather_air" id="cus_weather_air">
+      <span class="cus_weather_qlty" id="cus_weather_qlty">-</span>
+      <span class="cus_weather_aqi" id="cus_weather_aqi">0</span>
+    </div>
+  </div>
+</div>
+-->
+<div id="he-plugin-standard"></div>
+<script>
+WIDGET = {
+  CONFIG: {
+    "layout": 2,
+    "width": "220",
+    "height": "300",
+    "background": 5,
+    "dataColor": "4A4A4A",
+    "borderRadius": 5,
+    "key": "0a5f287552dc4c43b3326c451ed75625"
+  }
+}
+</script>
+<script src="https://widget.qweather.net/standard/static/js/he-standard-common.js?v=2.0"></script>
+
+
+          
+
+          
+            <div class="links-of-author motion-element" style="margin:10px">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/harvey-zang" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:harvey_dent@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://weibo.com/Hodorrrrrrrr" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>微博</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://douban.com/people/your-user-name" target="_blank" title="豆瓣">
+                      
+                        <i class="fa fa-fw fa-douban"></i>豆瓣</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://www.zhihu.com/people/harvey-36-62" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-zhihu"></i>知乎</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#kong%E9%83%A8%E7%BD%B2"><span class="nav-number">1.</span> <span class="nav-text">kong部署</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#APT%E8%B5%84%E6%96%99%E5%BA%93"><span class="nav-number">1.0.1.</span> <span class="nav-text">APT资料库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.0.2.</span> <span class="nav-text">安装</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kong%E7%AE%A1%E7%90%86API"><span class="nav-number">2.</span> <span class="nav-text">kong管理API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kong%E9%85%8D%E7%BD%AE"><span class="nav-number">3.</span> <span class="nav-text">kong配置</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mad King</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">26.9k</span>
+  
+</div>
+
+
+
+
+
+
+
+<div>
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv" style='display:none'>
+    本站总访问量 <span id="busuanzi_value_site_pv"></span> 次
+    <span class="post-meta-divider">|</span>
+</span>
+<span id="busuanzi_container_site_uv" style='display:none'>
+    有<span id="busuanzi_value_site_uv"></span>人看过我的博客啦
+</span>
+</div>
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  <script>
+$(function(){
+  $.get('https://api.xdooi.com/motto_en?l=38').then(res=>{
+    $('#edslogan').html('<span style="font-size:14px; color:#666;">'+res.english +'</span><div style="font-size:12px; color:#999; transform:scale(0.8,0.8)">'+res.chinese+'</div>');
+  })
+})
+</script>
+
+  <script>
+$(function(){
+  $.get('https://api.xdooi.com/getWeather').then(res=>{
+    console.log(res);
+    $('#cus_weather_tmp').html(res.now_weather.tmp + '°');
+    $('#cus_weather_location').html(res.basic.parent_city);
+    $('#cus_weather_cond_txt').html(res.now_weather.cond_txt);
+    $('#cus_weather_wind_dir').html(res.now_weather.wind_dir);
+    $('#cus_weather_wind_sc').html(res.now_weather.wind_sc);
+    $('#cus_weather_qlty').html(res.now_air.qlty);
+    $('#cus_weather_aqi').html(res.now_air.aqi);
+    $('#cus_weather_air').css('color',res.now_air.color)
+    // $('#edslogan').html('<span style="font-size:14px; color:#666;">'+res.english +'</span><div style="font-size:12px; color:#999; transform:scale(0.8,0.8)">'+res.chinese+'</div>');
+  })
+})
+</script>
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+      <style>
+        a.gitment-editor-footer-tip { display: none; }
+        .gitment-container.gitment-footer-container { display: none; }
+      </style>
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'harvey-zang',
+            repo: 'gitment',
+            
+            lang: "zh-Hans" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'fb53cfddb088e37c5c3d31eeda4da80baa3b872f',
+            
+                client_id: '7771ca49fb0fcd9f40b5'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.4"></script>
+
+
+  
+
+
+<div class="waifu">
+
+    <!-- 提示框 -->
+    <div class="waifu-tips"></div>
+
+    <!-- 看板娘画布 -->
+    <canvas id="live2d" class="live2d"></canvas>
+
+    <!-- 工具栏 -->
+    <div class="waifu-tool">
+        <span class="fui-home"></span>
+        <span class="fui-chat"></span>
+        <span class="fui-eye"></span>
+        <span class="fui-user"></span>
+        <span class="fui-photo"></span>
+        <span class="fui-info-circle"></span>
+        <span class="fui-cross"></span>
+    </div>
+
+</div>
+
+<script src="/assets/waifu-tips.js"></script>
+<script src="/assets/live2d.js"></script>
+
+<!-- 初始化看板娘，加载 waifu-tips.json -->
+<script type="text/javascript">
+    /* 可直接修改部分参数 */
+    live2d_settings['modelId'] = 5;                  // 默认模型 ID
+    live2d_settings['modelTexturesId'] = 1;          // 默认材质 ID
+    /* 在 initModel 前添加 */
+    initModel("http://madblog.cn/assets/waifu-tips.json")
+</script>
+
+</body>
+</html>

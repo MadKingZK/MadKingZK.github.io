@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <link rel="stylesheet" type="text/css" href="http://madblog.cn/assets/waifu.css"/>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.jpg?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="Atlassian,confluence,jira,crack," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="支持的服务列表Support (almost any version): JIRA Software JIRA Core JIRA Service Desk JIRA plugin: Capture JIRA plugin: Training JIRA plugin: Portfolio Confluence Confluence plugin: Questions Confluence plug">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Atlassian全软件+插件破解与部署(confluece、jira、fisheye等)">
+<meta property="og:url" content="http://madblog.cn/posts/0d0806df1fec8d39.html">
+<meta property="og:site_name" content="Oh My Mad Blog">
+<meta property="og:description" content="支持的服务列表Support (almost any version): JIRA Software JIRA Core JIRA Service Desk JIRA plugin: Capture JIRA plugin: Training JIRA plugin: Portfolio Confluence Confluence plugin: Questions Confluence plug">
+<meta property="og:locale">
+<meta property="og:image" content="https://z3.ax1x.com/2021/03/23/6T1jMQ.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/03/23/6T1Oxg.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/03/23/6T1vrj.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/03/23/6T1xqs.png">
+<meta property="article:published_time" content="2021-02-22T16:49:06.000Z">
+<meta property="article:modified_time" content="2021-04-26T11:07:45.352Z">
+<meta property="article:author" content="Mad King">
+<meta property="article:tag" content="Atlassian">
+<meta property="article:tag" content="confluence">
+<meta property="article:tag" content="jira">
+<meta property="article:tag" content="crack">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://z3.ax1x.com/2021/03/23/6T1jMQ.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://madblog.cn/posts/0d0806df1fec8d39.html"/>
+
+
+
+
+
+  <title>Atlassian全软件+插件破解与部署(confluece、jira、fisheye等) | Oh My Mad Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="Oh My Mad Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <a target="_blank" rel="noopener" href="https://github.com/harvey-zang"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Oh My Mad Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">人生如逆旅，我亦是行人。</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://madblog.cn/posts/0d0806df1fec8d39.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1539151696&di=7e7522a3912191d49079c7bfc7173f79&src=http%3A%2F%2Fn1.itc.cn%2Fimg8%2Fwb%2Fsmccloud%2Frecom%2F2015%2F04%2F24%2F142980990481836394.JPEG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Oh My Mad Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Atlassian全软件+插件破解与部署(confluece、jira、fisheye等)</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-02-23T00:49:06+08:00">
+                2021-02-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Atlassian/" itemprop="url" rel="index">
+                    <span itemprop="name">Atlassian</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Atlassian/confluence/" itemprop="url" rel="index">
+                    <span itemprop="name">confluence</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Atlassian/confluence/jira/" itemprop="url" rel="index">
+                    <span itemprop="name">jira</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/0d0806df1fec8d39.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/posts/0d0806df1fec8d39.html" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+            <span>热度: </span><span id="busuanzi_value_page_pv"></span><span>℃</span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.6k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  8
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="支持的服务列表"><a href="#支持的服务列表" class="headerlink" title="支持的服务列表"></a>支持的服务列表</h2><h4 id="Support-almost-any-version"><a href="#Support-almost-any-version" class="headerlink" title="Support (almost any version):"></a>Support (almost any version):</h4><ul>
+<li>JIRA Software</li>
+<li>JIRA Core</li>
+<li>JIRA Service Desk</li>
+<li>JIRA plugin: Capture</li>
+<li>JIRA plugin: Training</li>
+<li>JIRA plugin: Portfolio</li>
+<li>Confluence</li>
+<li>Confluence plugin: Questions</li>
+<li>Confluence plugin: Team Calendars</li>
+<li>Bamboo</li>
+<li>Bitbucket</li>
+<li>FishEye</li>
+<li>Crowd</li>
+<li>Crucible</li>
+<li>支持Atlassian家几乎所有产品，同时支持插件。</li>
+<li>支持DataCenter模式。</li>
+<li>相比较于传统的crack来说可以很容易的升级你的服务，而不用重新再次破解。</li>
+<li>提供基于java的命令行 keygen，更方便在终端环境使用</li>
+</ul>
+<h2 id="安装部署"><a href="#安装部署" class="headerlink" title="安装部署"></a>安装部署</h2><h4 id="下面部署都以confluence为例"><a href="#下面部署都以confluence为例" class="headerlink" title="下面部署都以confluence为例"></a>下面部署都以confluence为例</h4><ol>
+<li>下载</li>
+</ol>
+<p>下载jar包：atlassian-agent.jar<br>将jar包放到Atlassian系列服务器上，找个稳定不会轻易清理的目录，例如/root/soft</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@test-xconfluence:~/soft<span class="comment"># readlink -f atlassian-agent.jar</span></span><br><span class="line">/root/soft/atlassian-agent.jar</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>设置环境变量</li>
+</ol>
+<p><strong>设置环境变量CATALINA_OPTS（这其实是Tomcat的环境变量，用来指定其启动java程序时附带的参数），把-javaagent参数附带上。具体可以这么做</strong></p>
+<ul>
+<li>你可以把：export CATALINA_OPTS=”-javaagent:/path/to/atlassian-agent.jar ${CATALINA_OPTS}”这样的命令放到.bashrc或.bash_profile这样的文件内。</li>
+<li>你可以把：export CATALINA_OPTS=”-javaagent:/path/to/atlassian-agent.jar ${CATALINA_OPTS}”这样的命令放到服务安装所在bin目录下的setenv.sh或setenv.bat（供windows使用）中。</li>
+<li>你还可以直接命令行执行：CATALINA_OPTS=”-javaagent:/path/to/atlassian-agent.jar” /path/to/start-confluence.sh来启动你的服务。</li>
+<li>或者你所知的其他修改环境变量的方法，但如果你机器上有无关的Tomcat服务，则不建议修改全局CATALINA_OPTS环境变量。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@test-xconfluence:~<span class="comment"># cat /etc/profile | grep CATALINA_OPTS</span></span><br><span class="line"><span class="built_in">export</span> CATALINA_OPTS=<span class="string">&quot;-javaagent:/root/soft/atlassian-agent.jar <span class="variable">$&#123;CATALINA_OPTS&#125;</span>&quot;</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">root@test-xconfluence:~<span class="comment"># source /etc/profile</span></span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>重启confluence</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line">root@test-xconfluence:~<span class="comment"># cd /data/server/atlassian/confluence/bin</span></span><br><span class="line">root@test-xconfluence:/data/server/atlassian/confluence/bin<span class="comment"># ls</span></span><br><span class="line">bootstrap.jar                                     setenv.sh</span><br><span class="line">catalina.bat                                      setenv.sh.orig</span><br><span class="line">catalina.sh                                       setjre.bat</span><br><span class="line">catalina-tasks.xml                                setjre.sh</span><br><span class="line">ciphers.bat                                       setup_user.sh</span><br><span class="line">ciphers.sh                                        shutdown.bat</span><br><span class="line">commons-daemon.jar                                shutdown.sh</span><br><span class="line">commons-daemon-native.tar.gz                      start-confluence.bat</span><br><span class="line">configtest.bat                                    start-confluence.sh</span><br><span class="line">configtest.sh                                     startup.bat</span><br><span class="line">confluence-context-path-extractor.jar             startup.sh</span><br><span class="line">daemon.sh                                         stop-confluence.bat</span><br><span class="line">digest.bat                                        stop-confluence.sh</span><br><span class="line">digest.sh                                         synchrony</span><br><span class="line">display-help.bat                                  synchrony-proxy-watchdog.jar</span><br><span class="line">display-help.sh                                   tcnative-1.dll</span><br><span class="line">install_linux_service.sh                          tomcat9.exe</span><br><span class="line">makebase.bat                                      tomcat9w.exe</span><br><span class="line">makebase.sh                                       tomcat-juli.jar</span><br><span class="line">OS X - Run Confluence In Background.command       tomcat-native.tar.gz</span><br><span class="line">OS X - Run Confluence In Terminal Window.command  tool-wrapper.bat</span><br><span class="line">OS X - Stop Confluence.command                    tool-wrapper.sh</span><br><span class="line">service.bat                                       user.sh</span><br><span class="line">setclasspath.bat                                  version.bat</span><br><span class="line">setclasspath.sh                                   version.sh</span><br><span class="line">setenv.bat</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">root@test-xconfluence:/data/server/atlassian/confluence/bin<span class="comment"># ./stop-confluence.sh</span></span><br><span class="line">executing as current user</span><br><span class="line">If you encounter issues starting up Confluence, please see the Installation guide at http://confluence.atlassian.com/display/DOC/Confluence+Installation+Guide</span><br><span class="line"> </span><br><span class="line">Server startup logs are located <span class="keyword">in</span> /data/server/atlassian/confluence/logs/catalina.out</span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">Using Java: /data/server/atlassian/confluence/jre//bin/java</span><br><span class="line">2020-04-25 02:18:42,444 INFO [main] [atlassian.confluence.bootstrap.SynchronyProxyWatchdog] A Context element <span class="keyword">for</span> <span class="variable">$&#123;confluence.context.path&#125;</span>/synchrony-proxy is found <span class="keyword">in</span> /data/server/atlassian/confluence/conf/server.xml. No further action is required</span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">Using CATALINA_BASE:   /data/server/atlassian/confluence</span><br><span class="line">Using CATALINA_HOME:   /data/server/atlassian/confluence</span><br><span class="line">Using CATALINA_TMPDIR: /data/server/atlassian/confluence/temp</span><br><span class="line">Using JRE_HOME:        /data/server/atlassian/confluence/jre/</span><br><span class="line">Using CLASSPATH:       /data/server/atlassian/confluence/bin/bootstrap.jar:/data/server/atlassian/confluence/bin/tomcat-juli.jar</span><br><span class="line">Using CATALINA_PID:    /data/server/atlassian/confluence/work/catalina.pid</span><br><span class="line">Tomcat did not stop <span class="keyword">in</span> time.</span><br><span class="line">To aid diagnostics a thread dump has been written to standard out.</span><br><span class="line">Killing Tomcat with the PID: 4439</span><br><span class="line">The Tomcat process has been killed.</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">root@test-xconfluence:/data/server/atlassian/confluence/bin<span class="comment"># ./start-confluence.sh</span></span><br><span class="line"> </span><br><span class="line">To run Confluence <span class="keyword">in</span> the foreground, start the server with start-confluence.sh -<span class="built_in">fg</span></span><br><span class="line">executing as current user</span><br><span class="line">If you encounter issues starting up Confluence, please see the Installation guide at http://confluence.atlassian.com/display/DOC/Confluence+Installation+Guide</span><br><span class="line"> </span><br><span class="line">Server startup logs are located <span class="keyword">in</span> /data/server/atlassian/confluence/logs/catalina.out</span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">Using Java: /data/server/atlassian/confluence/jre//bin/java</span><br><span class="line">2020-04-25 02:19:09,908 INFO [main] [atlassian.confluence.bootstrap.SynchronyProxyWatchdog] A Context element <span class="keyword">for</span> <span class="variable">$&#123;confluence.context.path&#125;</span>/synchrony-proxy is found <span class="keyword">in</span> /data/server/atlassian/confluence/conf/server.xml. No further action is required</span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">Using CATALINA_BASE:   /data/server/atlassian/confluence</span><br><span class="line">Using CATALINA_HOME:   /data/server/atlassian/confluence</span><br><span class="line">Using CATALINA_TMPDIR: /data/server/atlassian/confluence/temp</span><br><span class="line">Using JRE_HOME:        /data/server/atlassian/confluence/jre/</span><br><span class="line">Using CLASSPATH:       /data/server/atlassian/confluence/bin/bootstrap.jar:/data/server/atlassian/confluence/bin/tomcat-juli.jar</span><br><span class="line">Using CATALINA_PID:    /data/server/atlassian/confluence/work/catalina.pid</span><br><span class="line">Tomcat started.</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">root@test-xconfluence:/data/server/atlassian/confluence/bin<span class="comment"># ps axu | grep confluence</span></span><br><span class="line">root      6434  211 36.8 8202144 3009516 pts/3 Sl   02:19   1:24 /data/server/atlassian/confluence/jre//bin/java -Djava.util.logging.config.file=/data/server/atlassian/confluence/conf/logging.properties -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -javaagent:/root/soft/atlassian-agent.jar -Djdk.tls.ephemeralDHKeySize=2048 -Djava.protocol.handler.pkgs=org.apache.catalina.webresources -Dorg.apache.catalina.security.SecurityListener.UMASK=0027 -XX:ReservedCodeCacheSize=512m -XX:+UseCodeCacheFlushing -Dconfluence.context.path= -Datlassian.plugins.startup.options= -Dorg.apache.tomcat.websocket.DEFAULT_BUFFER_SIZE=32768 -Dsynchrony.enable.xhr.fallback=<span class="literal">true</span> -Xms4096m -Xmx4096m -XX:+UseG1GC -Datlassian.plugins.enable.wait=300 -Djava.awt.headless=<span class="literal">true</span> -XX:G1ReservePercent=20 -Xloggc:/data/server/atlassian/confluence/logs/gc-2020-04-25_02-19-09.log -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=5 -XX:GCLogFileSize=2M -XX:-PrintGCDetails -XX:+PrintGCDateStamps -XX:-PrintTenuringDistribution -javaagent:/root/soft/atlassian-agent.jar -Dignore.endorsed.dirs= -classpath /data/server/atlassian/confluence/bin/bootstrap.jar:/data/server/atlassian/confluence/bin/tomcat-juli.jar -Dcatalina.base=/data/server/atlassian/confluence -Dcatalina.home=/data/server/atlassian/confluence -Djava.io.tmpdir=/data/server/atlassian/confluence/temp org.apache.catalina.startup.Bootstrap start</span><br></pre></td></tr></table></figure>
+<p><strong>启动后用 ps aux | grep confluence 检查，查看启动是否带有参数：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-javaagent:/root/soft/atlassian-agent.jar</span><br></pre></td></tr></table></figure>
+<p><strong>上面启动后检查，是带有破解插件参数的，然后查看日志，最后成功启动后，会输出一行日志：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">============================== agent working ==============================</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>生成License Key</li>
+</ol>
+<p><strong>执行指令：java -jar atlassian-agent.jar –help 查看帮助</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">root@test-xconfluence:~/soft<span class="comment"># java -jar atlassian-agent.jar --help</span></span><br><span class="line"> </span><br><span class="line">====================================================</span><br><span class="line">=======        Atlassian Crack Agent         =======</span><br><span class="line">=======           https://zhile.io           =======</span><br><span class="line">=======          QQ Group: 30347511          =======</span><br><span class="line">====================================================</span><br><span class="line"> </span><br><span class="line">KeyGen usage: java -jar /root/soft/atlassian-agent.jar [-d] [-h] -m &lt;arg&gt; [-n</span><br><span class="line">       &lt;arg&gt;] -o &lt;arg&gt; -p &lt;arg&gt; -s &lt;arg&gt;</span><br><span class="line"> -d,--datacenter           Data center license[default: <span class="literal">false</span>]        是否是datacenter，即数据中心；数据中心可实现分布式部署</span><br><span class="line"> -h,--<span class="built_in">help</span>                 Print <span class="built_in">help</span> message                         列出帮助信息</span><br><span class="line"> -m,--mail &lt;arg&gt;           License email                              License 邮箱</span><br><span class="line"> -n,--name &lt;arg&gt;           License name[default: &lt;license email&gt;]     License 名称</span><br><span class="line"> -o,--organisation &lt;arg&gt;   License organisation                       License 所属组织名称</span><br><span class="line"> -p,--product &lt;arg&gt;        License product, support:                  指明要申请哪类服务的License，下面都是参数与对应的服务</span><br><span class="line">                           [crowd: Crowd]                            </span><br><span class="line">                           [questions: Questions plugin <span class="keyword">for</span> Confluence]   </span><br><span class="line">                           [crucible: Crucible]</span><br><span class="line">                           [capture: Capture plugin <span class="keyword">for</span> JIRA]</span><br><span class="line">                           [conf: Confluence]</span><br><span class="line">                           [training: Training plugin <span class="keyword">for</span> JIRA]</span><br><span class="line">                           [*: Third party plugin key, looks like:</span><br><span class="line">                           com.foo.bar]</span><br><span class="line">                           [bitbucket: Bitbucket]</span><br><span class="line">                           [tc: Team Calendars plugin <span class="keyword">for</span> Confluence]</span><br><span class="line">                           [bamboo: Bamboo]</span><br><span class="line">                           [fisheye: FishEye]</span><br><span class="line">                           [portfolio: Portfolio plugin <span class="keyword">for</span> JIRA]</span><br><span class="line">                           [jc: JIRA Core]</span><br><span class="line">                           [jsd: JIRA Service Desk]</span><br><span class="line">                           [jira: JIRA Software(common jira)]</span><br><span class="line"> -s,--serverid &lt;arg&gt;       License server ID                         服务器ID，可以在confluence的License详情查看</span><br><span class="line"> </span><br><span class="line">================================================================================</span><br><span class="line"> </span><br><span class="line"><span class="comment"># Crack agent usage: append -javaagent arg to system environment: JAVA_OPTS.</span></span><br><span class="line"><span class="comment"># Example(execute this command or append it to setenv.sh/setenv.bat file):</span></span><br><span class="line"> </span><br><span class="line">  <span class="built_in">export</span> JAVA_OPTS=<span class="string">&quot;-javaagent:/root/soft/atlassian-agent.jar <span class="variable">$&#123;JAVA_OPTS&#125;</span>&quot;</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># Then start your confluence/jira server.</span></span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>生成秘钥<br>以一个主题插件为例</li>
+</ol>
+<ul>
+<li><p>打开插件市场<br><a target="_blank" rel="noopener" href="https://imgtu.com/i/6T1jMQ"><img src="https://z3.ax1x.com/2021/03/23/6T1jMQ.png" alt="6T1jMQ.png"></a></p>
+</li>
+<li><p>查找「 Redefine for Confluence 」插件，并点击下载<br><a target="_blank" rel="noopener" href="https://imgtu.com/i/6T1Oxg"><img src="https://z3.ax1x.com/2021/03/23/6T1Oxg.png" alt="6T1Oxg.png"></a></p>
+</li>
+<li><p>下载完成后在插件管理中找到该插件，记录下App Key<br><a target="_blank" rel="noopener" href="https://imgtu.com/i/6T1vrj"><img src="https://z3.ax1x.com/2021/03/23/6T1vrj.png" alt="6T1vrj.png"></a></p>
+</li>
+</ul>
+<ul>
+<li>点开License Detail，找到「 Server ID 」，记录下来</li>
+<li>执行指令，申请「 Redefine for Confluence  」的 License Key</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">root@test-xconfluence:~/soft<span class="comment"># java -jar atlassian-agent.jar -d true -m madking@madblog.cn -o madblog -p &#x27;com.refinedwiki.confluence.plugins.theme.original&#x27; -s LMN3-9OIG-EFGH-ABCD</span></span><br><span class="line"> </span><br><span class="line">====================================================</span><br><span class="line">=======        Atlassian Crack Agent         =======</span><br><span class="line">=======           https://zhile.io           =======</span><br><span class="line">=======          QQ Group: 30347511          =======</span><br><span class="line">====================================================</span><br><span class="line"> </span><br><span class="line">Your license code(Don<span class="string">&#x27;t copy this line!!!):</span></span><br><span class="line"><span class="string"> </span></span><br><span class="line"><span class="string">AAABBB0ODAoPeJyVUstuwjAQvPsrIvWcEBwiHlKkQhJVVDyqBnpfwgIrHCeyHQp8fU0AtaraA5J98</span></span><br><span class="line"><span class="string">Hh3NDuzTxkYZ1gph4eOzwdBd8C5E2cLh/vcZ7FCMFTKBAxGF8T1Oy4P2YRylBoXpwpnUGAUz6fT9</span></span><br><span class="line"><span class="string">D0eDycsPYCom6ZoA0IjS1DniqoGWUpBBRlcO+LK4KxOzs6YSg9arfOOBHpUsrnagiR9JTkSlJJAb</span></span><br><span class="line"><span class="string">qFkcSkN5CadAonobLF9XT7/KPDysmD2UxqUIHNMjxWp0018r+/6XXuYLfIUbkji+pP2ZJvkRtRo6</span></span><br><span class="line"><span class="string">71K1FuS2jM7LNArFdkXCA8toaoUaYyMqpFlqA6oxkk0elsGbn+evbov7VnmDkdxwmZ1sUI13yw1K</span></span><br><span class="line"><span class="string">h257btZf4t5q1W+A42/HX5cpGWAuFF6Ffk4g7WWDrcRb/l82BkuKXCW1avvHK8upLPIXnfSDnvdb</span></span><br><span class="line"><span class="string">PPPPPPPPPPPPPPPPPPPPPPD6jJas1NfCXr0CTAsAhQ+cxgwwT1HUN6c/mtZm5w9LB/ePgIUQrPse</span></span><br><span class="line"><span class="string">PPPPPPPPPPPPPPPPPPPPPP=X02ht</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>拷贝生成的key，填入到「 Redefine for Confluence 」插件管理界面中的License Key填入项，点击更新即可<br><a target="_blank" rel="noopener" href="https://imgtu.com/i/6T1xqs"><img src="https://z3.ax1x.com/2021/03/23/6T1xqs.png" alt="6T1xqs.png"></a></li>
+</ul>
+<p><strong>其他Atlassian服务也是同样的注册方式，已在6.15.10成功测试，在最新的7.x版本应该也是可以使用的。</strong></p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+      <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+      
+    </div>
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Mad King
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://madblog.cn/posts/0d0806df1fec8d39.html" title="Atlassian全软件+插件破解与部署(confluece、jira、fisheye等)">http://madblog.cn/posts/0d0806df1fec8d39.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Atlassian/" rel="tag"> <i class="fa fa-tag"></i> Atlassian</a>
+          
+            <a href="/tags/confluence/" rel="tag"> <i class="fa fa-tag"></i> confluence</a>
+          
+            <a href="/tags/jira/" rel="tag"> <i class="fa fa-tag"></i> jira</a>
+          
+            <a href="/tags/crack/" rel="tag"> <i class="fa fa-tag"></i> crack</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/e52afa13e0c050b7.html" rel="next" title="kong入门笔记">
+                <i class="fa fa-chevron-left"></i> kong入门笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/706c2bdd23906681.html" rel="prev" title="python列表扁平化">
+                python列表扁平化 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1539151696&di=7e7522a3912191d49079c7bfc7173f79&src=http%3A%2F%2Fn1.itc.cn%2Fimg8%2Fwb%2Fsmccloud%2Frecom%2F2015%2F04%2F24%2F142980990481836394.JPEG"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7Carchive">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+          </div>
+          
+         <div style="width:100%; border-top:1px solid #cdcdcd; border-bottom:1px solid #cdcdcd; margin-bottom:16px; padding-top:10px; text-align:center;">每日du英语<div id="edslogan"></div></div>
+
+         <!--
+<div class="cus_weather" id="cus_weather">
+  <div class="cus_weather_tmp" id="cus_weather_tmp">-</div>
+  <div class="cus_weather_cell">
+    <div class="cus_weather_location" id="cus_weather_location">-</div>
+    <div class="cus_weather_cond_txt" id="cus_weather_cond_txt">-</div>
+    <div class="cus_weather_wind">
+      <span class="cus_weather_wind_dir" id="cus_weather_wind_dir">-</span>
+      <span class="cus_weather_wind_sc" id="cus_weather_wind_sc">0</span>级
+    </div>
+
+    <div class="cus_weather_air" id="cus_weather_air">
+      <span class="cus_weather_qlty" id="cus_weather_qlty">-</span>
+      <span class="cus_weather_aqi" id="cus_weather_aqi">0</span>
+    </div>
+  </div>
+</div>
+-->
+<div id="he-plugin-standard"></div>
+<script>
+WIDGET = {
+  CONFIG: {
+    "layout": 2,
+    "width": "220",
+    "height": "300",
+    "background": 5,
+    "dataColor": "4A4A4A",
+    "borderRadius": 5,
+    "key": "0a5f287552dc4c43b3326c451ed75625"
+  }
+}
+</script>
+<script src="https://widget.qweather.net/standard/static/js/he-standard-common.js?v=2.0"></script>
+
+
+          
+
+          
+            <div class="links-of-author motion-element" style="margin:10px">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/harvey-zang" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:harvey_dent@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://weibo.com/Hodorrrrrrrr" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>微博</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://douban.com/people/your-user-name" target="_blank" title="豆瓣">
+                      
+                        <i class="fa fa-fw fa-douban"></i>豆瓣</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://www.zhihu.com/people/harvey-36-62" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-zhihu"></i>知乎</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%AF%E6%8C%81%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%88%97%E8%A1%A8"><span class="nav-number">1.</span> <span class="nav-text">支持的服务列表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Support-almost-any-version"><span class="nav-number">1.0.1.</span> <span class="nav-text">Support (almost any version):</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2"><span class="nav-number">2.</span> <span class="nav-text">安装部署</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8B%E9%9D%A2%E9%83%A8%E7%BD%B2%E9%83%BD%E4%BB%A5confluence%E4%B8%BA%E4%BE%8B"><span class="nav-number">2.0.1.</span> <span class="nav-text">下面部署都以confluence为例</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mad King</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">26.9k</span>
+  
+</div>
+
+
+
+
+
+
+
+<div>
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv" style='display:none'>
+    本站总访问量 <span id="busuanzi_value_site_pv"></span> 次
+    <span class="post-meta-divider">|</span>
+</span>
+<span id="busuanzi_container_site_uv" style='display:none'>
+    有<span id="busuanzi_value_site_uv"></span>人看过我的博客啦
+</span>
+</div>
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  <script>
+$(function(){
+  $.get('https://api.xdooi.com/motto_en?l=38').then(res=>{
+    $('#edslogan').html('<span style="font-size:14px; color:#666;">'+res.english +'</span><div style="font-size:12px; color:#999; transform:scale(0.8,0.8)">'+res.chinese+'</div>');
+  })
+})
+</script>
+
+  <script>
+$(function(){
+  $.get('https://api.xdooi.com/getWeather').then(res=>{
+    console.log(res);
+    $('#cus_weather_tmp').html(res.now_weather.tmp + '°');
+    $('#cus_weather_location').html(res.basic.parent_city);
+    $('#cus_weather_cond_txt').html(res.now_weather.cond_txt);
+    $('#cus_weather_wind_dir').html(res.now_weather.wind_dir);
+    $('#cus_weather_wind_sc').html(res.now_weather.wind_sc);
+    $('#cus_weather_qlty').html(res.now_air.qlty);
+    $('#cus_weather_aqi').html(res.now_air.aqi);
+    $('#cus_weather_air').css('color',res.now_air.color)
+    // $('#edslogan').html('<span style="font-size:14px; color:#666;">'+res.english +'</span><div style="font-size:12px; color:#999; transform:scale(0.8,0.8)">'+res.chinese+'</div>');
+  })
+})
+</script>
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+      <style>
+        a.gitment-editor-footer-tip { display: none; }
+        .gitment-container.gitment-footer-container { display: none; }
+      </style>
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'harvey-zang',
+            repo: 'gitment',
+            
+            lang: "zh-Hans" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'fb53cfddb088e37c5c3d31eeda4da80baa3b872f',
+            
+                client_id: '7771ca49fb0fcd9f40b5'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.4"></script>
+
+
+  
+
+
+<div class="waifu">
+
+    <!-- 提示框 -->
+    <div class="waifu-tips"></div>
+
+    <!-- 看板娘画布 -->
+    <canvas id="live2d" class="live2d"></canvas>
+
+    <!-- 工具栏 -->
+    <div class="waifu-tool">
+        <span class="fui-home"></span>
+        <span class="fui-chat"></span>
+        <span class="fui-eye"></span>
+        <span class="fui-user"></span>
+        <span class="fui-photo"></span>
+        <span class="fui-info-circle"></span>
+        <span class="fui-cross"></span>
+    </div>
+
+</div>
+
+<script src="/assets/waifu-tips.js"></script>
+<script src="/assets/live2d.js"></script>
+
+<!-- 初始化看板娘，加载 waifu-tips.json -->
+<script type="text/javascript">
+    /* 可直接修改部分参数 */
+    live2d_settings['modelId'] = 5;                  // 默认模型 ID
+    live2d_settings['modelTexturesId'] = 1;          // 默认材质 ID
+    /* 在 initModel 前添加 */
+    initModel("http://madblog.cn/assets/waifu-tips.json")
+</script>
+
+</body>
+</html>
